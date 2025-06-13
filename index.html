@@ -176,7 +176,11 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, updateDoc, increment, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
         window.onload = function() {
             const canvas = document.getElementById('minefieldCanvas');
             const ctx = canvas.getContext('2d');
@@ -1178,4 +1182,5 @@
             validateCustomGameSettings(); 
         };
     </script>
+    <script data-goatcounter="https://nuindev.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
