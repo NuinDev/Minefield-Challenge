@@ -4,59 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minefield Challenge</title>
-    <!-- Tailwind CSS CDN for easy styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Basic font for the entire document */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1a202c; /* Dark background (gray-900) */
+            background-color: #1a202c; 
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; /* Minimum viewport height */
+            min-height: 100vh; 
             margin: 0;
-            padding: 20px; /* Extra spacing to prevent squeezing on small screens */
-            box-sizing: border-box; /* Include padding in size calculation */
+            padding: 20px; 
+            box-sizing: border-box; 
         }
-        /* Styling for the game canvas area */
         canvas {
-            border-radius: 0.75rem; /* Rounded corners */
-            background-color: #2d3748; /* Darker background for the game field (gray-700) */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15); /* Darker shadow for depth */
-            display: block; /* Removes extra space below the canvas */
-            /* Canvas width/height is controlled by JS (fixed internal resolution) and CSS (max-width) */
-            max-width: 100%; /* Ensures the canvas is responsive */
-            height: auto; /* Ensures the canvas is responsive */
-            cursor: default; /* Standard mouse cursor */
+            border-radius: 0.75rem; 
+            background-color: #2d3748; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15); 
+            display: block;
+            max-width: 100%; 
+            height: auto; 
+            cursor: default; 
         }
-
-        /* The 'grabbing'-class is no longer used, as the cursor should not be changed. */
-
-        /* Colors for numbers in revealed cells (adapted for Dark Mode) */
-        .text-1 { color: #63b3ed; } /* blue-300 */
-        .text-2 { color: #68d391; } /* green-300 */
-        .text-3 { color: #f6ad55; } /* orange-300 */
-        .text-4 { color: #a78bfa; } /* purple-300 */
-        .text-5 { color: #f06292; } /* pink-500 */
-        .text-6 { color: #4fd1c5; } /* teal-300 */
-        .text-7 { color: #e2e8f0; } /* gray-200 */
-        .text-8 { color: #f7fafc; } /* gray-100 */
-
-        /* Styles for the slider thumb */
+        .text-1 { color: #63b3ed; } 
+        .text-2 { color: #68d391; } 
+        .text-3 { color: #f6ad55; } 
+        .text-4 { color: #a78bfa; } 
+        .text-5 { color: #f06292; } 
+        .text-6 { color: #4fd1c5; } 
+        .text-7 { color: #e2e8f0; } 
+        .text-8 { color: #f7fafc; } 
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 20px; /* Adjust thumb size */
-            height: 20px; /* Adjust thumb size */
+            width: 20px; 
+            height: 20px; 
             border-radius: 50%;
-            background: #63b3ed; /* Blue color for the thumb */
+            background: #63b3ed; 
             cursor: pointer;
-            border: 2px solid #3182ce; /* Darker blue border */
+            border: 2px solid #3182ce; 
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-            margin-top: -8px; /* Center the thumb vertically */
+            margin-top: -8px; 
         }
-
         input[type="range"]::-moz-range-thumb {
             width: 20px;
             height: 20px;
@@ -66,14 +55,11 @@
             border: 2px solid #3182ce;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         }
-
-        /* Styles for the slider track */
         input[type="range"]::-webkit-slider-runnable-track {
-            height: 4px; /* Track height */
-            background: #4a5568; /* Dark gray track */
+            height: 4px; 
+            background: #4a5568;
             border-radius: 2px;
         }
-
         input[type="range"]::-moz-range-track {
             height: 4px;
             background: #4a5568;
@@ -82,11 +68,8 @@
     </style>
 </head>
 <body class="selection:bg-blue-600">
-    <!-- Main container for the game and controls -->
     <div class="flex flex-col items-center p-6 bg-gray-800 rounded-xl shadow-2xl max-w-lg mx-auto w-full">
         <h1 class="text-4xl font-extrabold text-gray-100 mb-6 tracking-tight">Minefield Challenge</h1>
-
-        <!-- Display for mine count and timer -->
         <div class="flex justify-between w-full mb-4 px-2">
             <div class="flex items-center text-gray-300 text-lg font-semibold">
                 <span id="mine-count" class="mr-2">Mines: --</span>
@@ -101,22 +84,14 @@
                 </svg>
             </div>
         </div>
-
-        <!-- Canvas element for the game board -->
         <canvas id="minefieldCanvas" class="border-4 border-blue-600"></canvas>
-
-        <!-- Area for game messages (won/lost) -->
         <div id="game-message" class="mt-6 text-xl font-bold text-center text-gray-100"></div>
-
-        <!-- Button to start a new game -->
         <div class="flex justify-center space-x-4 mt-8 w-full">
             <button id="reset-button" class="px-6 py-3 bg-blue-700 text-white font-bold rounded-lg shadow-md hover:bg-blue-800 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-75">
                 New Game
             </button>
         </div>
     </div>
-
-    <!-- Difficulty selection modal -->
     <div id="difficultyModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 p-4">
         <div class="bg-gray-800 p-8 rounded-lg shadow-xl max-w-sm w-full border border-blue-600">
             <h2 class="text-3xl font-bold text-gray-100 mb-6 text-center">Choose Difficulty</h2>
@@ -126,12 +101,9 @@
                 <button id="mediumDifficultyButton" class="difficulty-button w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 transition duration-300" data-difficulty="medium">Medium (16x16, 40 Mines)</button>
                 <button id="hardDifficultyButton" class="difficulty-button w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 transition duration-300" data-difficulty="hard">Hard (20x20, 80 Mines)</button>
             </div>
-
-            <!-- Custom Settings Slider and Display - now wrapped in a single container for highlighting -->
             <div id="customSettingsContainer" class="mt-4 space-y-4 rounded-lg p-2">
-                <!-- Custom button is now the first element inside the container, for consistent highlighting -->
                 <button id="customDifficultyButton" class="w-full py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-300">Custom</button>
-                <div id="customSettings" class="space-y-4 pt-4 hidden"> <!-- Hidden by default, shown when custom selected -->
+                <div id="customSettings" class="space-y-4 pt-4 hidden"> 
                     <div>
                         <label for="gridSizeSlider" class="block text-gray-300 text-sm font-bold mb-2">Grid Size: <span id="gridSizeDisplay">16</span>x<span id="gridSizeDisplay2">16</span></label>
                         <input type="range" id="gridSizeSlider" min="5" max="50" value="16" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
@@ -142,19 +114,13 @@
                     <p id="mineCountWarning" class="text-red-400 text-xs italic mt-1 hidden">Grid size must be between 5 and 50.</p>
                 </div>
             </div>
-
             <button id="startGameButton" class="w-full mt-8 px-6 py-3 bg-green-700 text-white font-bold rounded-lg shadow-md hover:bg-green-800 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-75">
                 Start Game
             </button>
         </div>
     </div>
-
     <script>
-        // The entire game code is now encapsulated within window.onload.
-        // This ensures that the DOM is fully loaded and all variables
-        // and functions are defined before they are used.
         window.onload = function() {
-            // --- DOM Elements (accessed after DOM readiness) ---
             const canvas = document.getElementById('minefieldCanvas');
             const ctx = canvas.getContext('2d');
             const resetButton = document.getElementById('reset-button');
@@ -162,47 +128,31 @@
             const mineCountDisplay = document.getElementById('mine-count');
             const timerDisplay = document.getElementById('timer');
             const difficultyModal = document.getElementById('difficultyModal');
-            // Select all difficulty buttons, including the custom one, for consistent highlight removal
-            // Note: customDifficultyButton is now conceptually part of customSettingsContainer's highlight.
-            // For now, we only need to query the preset buttons if we want to toggle their specific highlights.
             const presetDifficultyButtons = document.querySelectorAll('.difficulty-button:not(#customDifficultyButton)'); 
             const customDifficultyButton = document.getElementById('customDifficultyButton');
-            const customSettingsContainer = document.getElementById('customSettingsContainer'); // Container for highlight
-            const customSettingsDiv = document.getElementById('customSettings'); // Div containing slider/display
+            const customSettingsContainer = document.getElementById('customSettingsContainer'); 
+            const customSettingsDiv = document.getElementById('customSettings'); 
             const gridSizeSlider = document.getElementById('gridSizeSlider'); 
             const gridSizeDisplay = document.getElementById('gridSizeDisplay');
-            const gridSizeDisplay2 = document.getElementById('gridSizeDisplay2'); // For "XxX" format
+            const gridSizeDisplay2 = document.getElementById('gridSizeDisplay2'); 
             const calculatedMinesDisplay = document.getElementById('calculatedMinesDisplay');
             const mineCountWarning = document.getElementById('mineCountWarning');
             const startGameButton = document.getElementById('startGameButton');
-
-            // --- Game Configuration (Initial Values) ---
             let currentGridSize = 16;
             let currentNumMines = 40;
             const BASE_CELL_SIZE = 60;
-            // Adjusted mine density, based on "Hard" (80 mines on 20x20 grid) for proportional increase in Custom mode
             const CUSTOM_MINE_DENSITY_RATIO = 80 / (20 * 20); // 0.2
-
-            // Dynamic zoom limits
-            let dynamicMinZoom = 0.5; // Default minimal zoom, will be calculated
-            let dynamicMaxZoom = 3.0; // Default maximal zoom, will be calculated
-
-            // Initial canvas dimensions (will be set correctly in initializeGame)
+            let dynamicMinZoom = 0.5; 
+            let dynamicMaxZoom = 3.0; 
             canvas.width = currentGridSize * BASE_CELL_SIZE;
             canvas.height = currentGridSize * BASE_CELL_SIZE;
-
-            // --- Camera and Zoom Variables ---
             let cameraX = 0;
             let cameraY = 0;
-            let zoomLevel = 1.0; // Initial zoom will be set dynamically
-            
-            // --- Drag & Click Variables ---
+            let zoomLevel = 1.0;
             let isDragging = false;
-            let dragStartWorldX, dragStartWorldY; // Stores the world coordinates where the drag started
-            let initialClickX, initialClickY; // Stores the screen coordinates of the initial click for DRAG_THRESHOLD
-            const DRAG_THRESHOLD = 5; // Tolerance for click vs. drag
-
-            // --- Game State Variables ---
+            let dragStartWorldX, dragStartWorldY; 
+            let initialClickX, initialClickY; 
+            const DRAG_THRESHOLD = 5;
             let board = [];
             let revealedCount = 0;
             let gameActive = false;
@@ -211,22 +161,18 @@
             let secondsElapsed = 0;
             let isFirstClick = true;
             let hoveredCell = { row: -1, col: -1 };
-            let isBoardReady = false; // New flag to track if the board is fully initialized
-
-            // --- Cell States ---
+            let isBoardReady = false; 
             const CELL_COVERED = 0;
             const CELL_REVEALED = 1;
             const CELL_FLAGGED = 2;
             const CELL_MINE = 3;
-
-            // --- Game Colors and Fonts (adapted for Dark Mode) ---
             const COLORS = {
                 covered: '#4a5568',
                 revealed: '#2d3748',
                 flag: '#e53e3e',
                 mine: '#cbd5e1',
-                clickedMine: '#f56565', // Distinct red for the detonated mine
-                hoverEffect: '#FFDD66', // A light golden hue for the hover effect
+                clickedMine: '#f56565', 
+                hoverEffect: '#FFDD66', 
                 gridLine: '#9ca3af',
                 text: {
                     1: '#63b3ed',
@@ -239,16 +185,6 @@
                     8: '#f7fafc'
                 }
             };
-
-            // --- HELPER FUNCTIONS ---
-
-            /**
-             * Zählt die Anzahl der Minen in angrenzenden Feldern für eine gegebene Zelle.
-             * Counts the number of mines in adjacent cells for a given cell.
-             * @param {number} row - The row of the cell.
-             * @param {number} col - The column of the cell.
-             * @returns {number} The count of adjacent mines.
-             */
             const countAdjacentMines = function(row, col) {
                 let count = 0;
                 for (let dr = -1; dr <= 1; dr++) {
@@ -267,52 +203,32 @@
                 }
                 return count;
             };
-
-            /**
-             * Zeichnet ein Minensymbol.
-             * Draws a mine symbol.
-             * @param {number} x - X-coordinate of the cell.
-             * @param {number} y - Y-coordinate of the cell.
-             * @param {number} size - The size of the cell (BASE_CELL_SIZE).
-             * @param {string} color - The color of the mine body.
-             * @param {boolean} isDetonated - True if this is the mine that was clicked to end the game.
-             */
             const drawMine = function(x, y, size, color, isDetonated = false) {
                 const centerX = x + size / 2;
                 const centerY = y + size / 2;
 
                 if (isDetonated) {
-                    // Draw a pulsating red glow for the detonated mine
-                    const baseRadius = size * 0.3; // Base radius for the glow
-                    const pulseIntensity = 0.1; // How much it pulses (e.g., 10%)
-                    const pulseSpeed = 0.01; // Speed of the pulse animation
-
-                    // Use a simple sine wave for pulsating effect
+                    const baseRadius = size * 0.3; 
+                    const pulseIntensity = 0.1; 
+                    const pulseSpeed = 0.01; 
                     const pulseOffset = Math.sin(Date.now() * pulseSpeed) * pulseIntensity;
                     const currentRadius = baseRadius * (1 + pulseOffset);
-
-                    // Outer red glow
                     ctx.beginPath();
                     ctx.arc(centerX, centerY, currentRadius * 1.5, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255, 0, 0, ${0.4 * (1 - pulseOffset)})`; // Fade out slightly as it expands
+                    ctx.fillStyle = `rgba(255, 0, 0, ${0.4 * (1 - pulseOffset)})`; 
                     ctx.fill();
                     ctx.closePath();
-
-                    // Inner orange/yellow glow
                     ctx.beginPath();
                     ctx.arc(centerX, centerY, currentRadius * 1.0, 0, Math.PI * 2);
                     ctx.fillStyle = `rgba(255, 165, 0, ${0.6 * (1 - pulseOffset)})`;
                     ctx.fill();
                     ctx.closePath();
                 }
-
-                ctx.fillStyle = color; // Use the passed color for the main body of the mine
+                ctx.fillStyle = color; 
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, size / 4, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.closePath();
-
-                // Spikes
                 for (let i = 0; i < 8; i++) {
                     const angle = (Math.PI / 4) * i;
                     const innerX = centerX + Math.cos(angle) * (size / 4);
@@ -322,21 +238,12 @@
                     ctx.beginPath();
                     ctx.moveTo(innerX, innerY);
                     ctx.lineTo(outerX, outerY);
-                    ctx.strokeStyle = 'white'; // Spikes remain white for contrast
+                    ctx.strokeStyle = 'white'; 
                     ctx.lineWidth = 2 / zoomLevel;
                     ctx.stroke();
                     ctx.closePath();
                 }
             };
-
-
-            /**
-             * Zeichnet ein Flaggensymbol.
-             * Draws a flag symbol.
-             * @param {number} x - X-coordinate of the cell.
-             * @param {number} y - Y-coordinate of the cell.
-             * @param {number} size - The size of the cell (BASE_CELL_SIZE).
-             */
             const drawFlag = function(x, y, size) {
                 ctx.fillStyle = COLORS.flag;
                 ctx.fillRect(x + size / 2 - 1 / zoomLevel, y + size / 4, 2 / zoomLevel, size / 2);
@@ -347,19 +254,10 @@
                 ctx.closePath();
                 ctx.fill();
             };
-
-            /**
-             * Konvertiert Mauskoordinaten auf dem Bildschirm in Weltkoordinaten auf dem Spielfeld.
-             * Converts mouse coordinates on the screen to world coordinates on the game board.
-             * @param {MouseEvent} event - The mouse event.
-             * @returns {{x: number, y: number}} The world coordinates.
-             */
             const getMouseWorldCoordinates = function(event) {
                 const rect = canvas.getBoundingClientRect();
                 const canvasDisplayX = event.clientX - rect.left;
                 const canvasDisplayY = event.clientY - rect.top;
-
-                // Convert display pixels to internal canvas pixels
                 const canvasInternalX = canvasDisplayX * (canvas.width / rect.width);
                 const canvasInternalY = canvasDisplayY * (canvas.height / rect.height);
 
@@ -369,12 +267,6 @@
                 return { x: worldX, y: worldY };
             };
 
-            /**
-             * Klemmt die Kamera an die Grenzen des Spielfeldes, erlaubt aber leichtes "Überziehen"
-             * für ein besseres Drag-Gefühl, auch wenn das Spielfeld kleiner als der Viewport ist.
-             * Clamps the camera to the board boundaries, allowing slight "overdrag"
-             * for a better dragging feel, even if the board is smaller than the viewport.
-             */
             const clampCamera = function() {
                 const boardWorldWidth = currentGridSize * BASE_CELL_SIZE;
                 const boardWorldHeight = currentGridSize * BASE_CELL_SIZE;
@@ -382,7 +274,7 @@
                 const visibleWorldWidth = canvas.width / zoomLevel;
                 const visibleWorldHeight = canvas.height / zoomLevel;
 
-                // Allow overdrag up to 50% of the visible width/height
+
                 const overdragBufferX = visibleWorldWidth * 0.5;
                 const overdragBufferY = visibleWorldHeight * 0.5;
 
@@ -391,10 +283,6 @@
                 let minCamY = -overdragBufferY;
                 let maxCamY = (boardWorldHeight - visibleWorldHeight) + overdragBufferY;
 
-                // If the board is smaller than the visible area,
-                // adjust max/min values to prevent the camera from going
-                // too far into the negative area if the board were centered.
-                // But keep the overdrag buffer to allow dragging.
                 if (boardWorldWidth < visibleWorldWidth) {
                     minCamX = (boardWorldWidth - visibleWorldWidth) / 2 - overdragBufferX;
                     maxCamX = (boardWorldWidth - visibleWorldWidth) / 2 + overdragBufferX;
@@ -408,10 +296,6 @@
                 cameraY = Math.max(minCamY, Math.min(cameraY, maxCamY));
             };
 
-            /**
-             * Startet den Spiel-Timer.
-             * Starts the game timer.
-             */
             const startTimer = function() {
                 timerInterval = setInterval(() => {
                     secondsElapsed++;
@@ -421,19 +305,12 @@
                 }, 1000);
             };
 
-            /**
-             * Aktualisiert die Anzeige des Minenzählers.
-             * Updates the mine count display.
-             */
+
             const updateMineCountDisplay = function() {
                 mineCountDisplay.textContent = `Mines: ${currentNumMines - minesFlagged}`;
             };
 
-            /**
-             * Beendet das Spiel und zeigt eine Nachricht an.
-             * Ends the game and displays a message.
-             * @param {boolean} won - True if the player won, False otherwise.
-             */
+
             const gameOver = function(won) {
                 gameActive = false;
                 clearInterval(timerInterval);
@@ -442,66 +319,54 @@
                     gameMessage.textContent = 'You won! 🎉';
                     gameMessage.classList.remove('text-red-400');
                     gameMessage.classList.add('text-green-400');
-                    // Flag all remaining unflagged mines when won
+
                     for (let r = 0; r < currentGridSize; r++) {
                         for (let c = 0; c < currentGridSize; c++) {
                             const cell = board[r][c];
                             if (cell.isMine && cell.state !== CELL_FLAGGED) {
-                                cell.state = CELL_FLAGGED; // Flag unflagged mines
+                                cell.state = CELL_FLAGGED; 
                             }
-                            // Reveal all non-mines for clarity even on win
+
                             else if (!cell.isMine && cell.state !== CELL_REVEALED) {
                                 cell.state = CELL_REVEALED;
                             }
                         }
                     }
-                    minesFlagged = currentNumMines; // All mines are now considered flagged
+                    minesFlagged = currentNumMines; 
                 } else {
                     gameMessage.textContent = 'Game Over! 💥';
                     gameMessage.classList.remove('text-green-400');
                     gameMessage.classList.add('text-red-400');
-                    
-                    // Reveal all cells to show where mines were and what was correctly/incorrectly flagged
+
                     for (let r = 0; r < currentGridSize; r++) {
                         for (let c = 0; c < currentGridSize; c++) {
                             const cell = board[r][c];
                             if (cell.isMine) {
                                 if (cell.state !== CELL_FLAGGED) {
-                                    cell.state = CELL_REVEALED; // Reveal unflagged mines
+                                    cell.state = CELL_REVEALED; 
                                 }
-                                // The clicked mine already has isClickedMine = true
-                            } else { // Not a mine
-                                if (cell.state !== CELL_REVEALED) { // If it's covered or incorrectly flagged
-                                    cell.state = CELL_REVEALED; // Reveal all non-mine cells
+
+                            } else { 
+                                if (cell.state !== CELL_REVEALED) { 
+                                    cell.state = CELL_REVEALED; 
                                 }
                             }
                         }
                     }
                 }
                 updateMineCountDisplay();
-                requestAnimationFrame(animationLoop); // Start/continue animation loop for explosion
+                requestAnimationFrame(animationLoop); 
             };
 
-            /**
-             * Prüft, ob der Spieler das Spiel gewonnen hat.
-             * Checks if the player has won the game.
-             */
             const checkWin = function() {
                 if (revealedCount === (currentGridSize * currentGridSize) - currentNumMines) {
                     gameOver(true);
                 }
             };
 
-            /**
-             * Deckt ein Feld auf und deckt rekursiv Nachbarfelder auf, wenn das Feld 0 angrenzende Minen hat.
-             * Uncovers a cell and recursively uncovers neighboring cells if the cell has 0 adjacent mines.
-             * @param {number} row - The row of the cell.
-             * @param {number} col - The column of the cell.
-             * @param {boolean} isInitialClick - True if this is the user's first click.
-             */
             const uncoverCell = function(row, col, isInitialClick = false) {
                 if (row < 0 || row >= currentGridSize || col < 0 || col >= currentGridSize ||
-                    !isBoardReady || !board[row] || !board[row][col] || // Added checks for board/cell existence
+                    !isBoardReady || !board[row] || !board[row][col] || 
                     board[row][col].state === CELL_REVEALED || board[row][col].state === CELL_FLAGGED || !gameActive) {
                     return;
                 }
@@ -509,8 +374,8 @@
                 const cell = board[row][col];
 
                 if (cell.isMine && !isInitialClick) {
-                    cell.isClickedMine = true; // Mark this mine as the one that was clicked
-                    // No longer setting detonationTime to make it glow indefinitely
+                    cell.isClickedMine = true; 
+
                     gameOver(false);
                     return;
                 }
@@ -525,21 +390,15 @@
                         }
                     }
                 }
-                // No need to call drawBoard here directly, animationLoop will handle it.
-                if (gameActive) { // Only draw immediately if game is still active
+
+                if (gameActive) { 
                     drawBoard();
                 }
                 checkWin();
             };
 
-            /**
-             * Schaltet den Flaggen-Status einer Zelle um (Flaggen setzen/entfernen).
-             * Toggles the flag status of a cell (set/remove flag).
-             * @param {number} row - The row of the cell.
-             * @param {number} col - The column of the cell.
-             */
             const toggleFlag = function(row, col) {
-                if (!gameActive || !isBoardReady || !board[row] || !board[row][col] || // Added checks for board/cell existence
+                if (!gameActive || !isBoardReady || !board[row] || !board[row][col] || 
                     board[row][col].state === CELL_REVEALED) {
                     return;
                 }
@@ -557,14 +416,7 @@
                 checkWin();
             };
 
-            /**
-             * Platziert die Minen auf dem Spielfeld NACH dem ersten Klick.
-             * Stellt sicher, dass das erste geklickte Feld und seine unmittelbaren Nachbarn minenfrei sind.
-             * Places mines on the board AFTER the first click.
-             * Ensures that the first clicked cell and its immediate neighbors are mine-free.
-             * @param {number} firstClickRow - The row of the first click.
-             * @param {number} firstClickCol - The column of the first click.
-             */
+
             const placeMines = function(firstClickRow, firstClickCol) {
                 let minesPlaced = 0;
                 const safeCells = new Set();
@@ -599,20 +451,15 @@
                 }
             };
 
-            /**
-             * Zeichnet das gesamte Spielfeld auf das Canvas.
-             * Draws the entire game board on the canvas.
-             */
+
             const drawBoard = function() {
-                // If the board is not ready, do not draw yet.
+
                 if (!isBoardReady) {
                     return;
                 }
 
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                // --- Zeichne Zelleninhalte (Hintergrund, Zahlen, Minen, Flaggen, Hover) ---
-                // --- Draw cell contents (background, numbers, mines, flags, hover) ---
                 ctx.save();
                 ctx.translate(-cameraX * zoomLevel, -cameraY * zoomLevel);
                 ctx.scale(zoomLevel, zoomLevel);
@@ -621,7 +468,7 @@
 
                 for (let r = 0; r < currentGridSize; r++) {
                     for (let c = 0; c < currentGridSize; c++) {
-                        // Added check for cell existence before accessing properties
+
                         if (!board[r] || !board[r][c]) { 
                             continue; 
                         }
@@ -629,8 +476,6 @@
                         const x = c * scaledCellSize;
                         const y = r * scaledCellSize;
 
-                        // Hintergrundfarbe der Zelle füllen
-                        // Fill cell background
                         ctx.beginPath();
                         ctx.rect(x, y, scaledCellSize, scaledCellSize);
                         if (cell.state === CELL_REVEALED) {
@@ -641,8 +486,6 @@
                         ctx.fill();
                         ctx.closePath();
 
-                        // Inhalte der Zelle zeichnen (Zahl oder Mine)
-                        // Draw cell contents (number or mine)
                         if (cell.state === CELL_REVEALED) {
                             if (!cell.isMine && cell.adjacentMines > 0) {
                                 ctx.fillStyle = COLORS.text[cell.adjacentMines] || COLORS.text[8];
@@ -651,97 +494,66 @@
                                 ctx.textBaseline = 'middle';
                                 ctx.fillText(cell.adjacentMines, x + scaledCellSize / 2, y + scaledCellSize / 2);
                             } else if (cell.isMine) {
-                                // Use the clicked mine color for the detonated mine, otherwise default mine color
+     
                                 const mineColor = cell.isClickedMine ? COLORS.clickedMine : COLORS.mine;
-                                drawMine(x, y, scaledCellSize, mineColor, cell.isClickedMine); // Pass isClickedMine as isDetonated
+                                drawMine(x, y, scaledCellSize, mineColor, cell.isClickedMine);
                             }
                         }
 
-                        // Hover-Effekt zeichnen: gefülltes Quadrat
-                        // Draw hover effect: filled square
                         if (gameActive && (cell.state === CELL_COVERED || cell.state === CELL_FLAGGED) && r === hoveredCell.row && c === hoveredCell.col) {
                             ctx.beginPath();
                             ctx.rect(x, y, scaledCellSize, scaledCellSize);
-                            ctx.fillStyle = COLORS.hoverEffect; // Light golden color
-                            ctx.fill(); // Fill the square
+                            ctx.fillStyle = COLORS.hoverEffect; 
+                            ctx.fill();
                             ctx.closePath();
                         }
 
-                        // Flag zeichnen (wenn es ein geflaggtes Feld ist) - JETZT NACH dem Hover-Effekt
-                        // Draw flag (if it's a flagged cell) - NOW AFTER the hover effect
                         if (cell.state === CELL_FLAGGED) {
                             drawFlag(x, y, scaledCellSize);
                         }
                     }
                 }
-                ctx.restore(); // Restore context after drawing cell contents
+                ctx.restore(); 
 
-                // --- Gitterlinien separat zeichnen in DISPLAY-Koordinaten ---
-                // --- Draw grid lines separately in DISPLAY coordinates ---
                 ctx.strokeStyle = COLORS.gridLine;
 
-                /**
-                 * Bestimmt die gewünschte Liniendicke auf dem Bildschirm basierend auf der Gittergröße.
-                 * Determines the desired line thickness on the screen based on the grid size.
-                 * @param {number} gridSize - The current grid size (e.g., 10, 16, 20, 50).
-                 * @returns {number} The desired line thickness in screen pixels.
-                 */
                 const getDesiredScreenLineWidth = function(gridSize) {
-                    // Angepasste Logik für dünnere Linien bei größeren Feldern und generell proportionaler
-                    // Adjusted logic for thinner lines on larger grids and generally more proportional
-                    if (gridSize <= 15) { // For smaller grids (e.g., Easy/Medium)
+
+                    if (gridSize <= 15) {
                         return 4; 
-                    } else if (gridSize <= 30) { // For medium-sized grids (e.g., Hard, Custom 30x30)
+                    } else if (gridSize <= 30) { 
                         return 3; 
-                    } else { // For larger grids (z.B. Custom 31x31 to 50x50)
+                    } else { 
                         return 2; 
                     }
                 };
 
                 const desiredScreenLineWidth = getDesiredScreenLineWidth(currentGridSize);
 
-                // Berechne den aktuellen CSS-Skalierungsfaktor des Canvas
-                // Calculate the current CSS scaling factor of the canvas
                 const internalCanvasWidth = canvas.width;
-                const displayedCanvasWidth = canvas.clientWidth || internalCanvasWidth; // Fallback if clientWidth is 0
-                const cssScaleFactor = internalCanvasWidth / displayedCanvasWidth; // This is the scaling from internal canvas pixels to display pixels.
+                const displayedCanvasWidth = canvas.clientWidth || internalCanvasWidth; 
+                const cssScaleFactor = internalCanvasWidth / displayedCanvasWidth; 
 
-                // Setze die Liniendicke so, dass sie auf dem Bildschirm `desiredScreenLineWidth` Pixel beträgt.
-                // Die interne Canvas-Liniendicke muss den CSS-Skalierungsfaktor kompensieren.
-                // Set the line thickness so that it is `desiredScreenLineWidth` pixels on the screen.
-                // The internal canvas line thickness must compensate for the CSS scaling factor.
                 ctx.lineWidth = desiredScreenLineWidth * cssScaleFactor;
 
-
-                // Berechne die Weltkoordinaten des Spielfelds
-                // Calculate the world coordinates of the game board
                 const worldGridWidth = currentGridSize * BASE_CELL_SIZE;
                 const worldGridHeight = currentGridSize * BASE_CELL_SIZE;
 
-                // Berechne die Display-Koordinaten des sichtbaren Bereichs des Spielfelds (gerundet für Pixel-Perfektion)
-                // Calculate the display coordinates of the visible area of the game board (rounded for pixel perfection)
                 const displayGridLeft = Math.round((0 - cameraX) * zoomLevel);
                 const displayGridTop = Math.round((0 - cameraY) * zoomLevel);
                 const displayGridRight = Math.round((worldGridWidth - cameraX) * zoomLevel);
                 const displayGridBottom = Math.round((worldGridHeight - cameraY) * zoomLevel);
 
-                // Setze den Clipping-Pfad, um Linien außerhalb des Spielfeldes zu verhindern
-                // Der Clipping-Pfad muss exakt den Grenzen des gerundeten Spielfelds folgen
-                // Set the clipping path to prevent lines outside the board
-                // The clipping path must exactly follow the rounded boundaries of the board
                 ctx.save();
                 ctx.beginPath();
                 ctx.rect(displayGridLeft, displayGridTop,
-                         displayGridRight - displayGridLeft, // Width of the clipping area
-                         displayGridBottom - displayGridTop); // Height of the clipping area
-                ctx.clip(); // All subsequent drawings will be clipped to this area
+                         displayGridRight - displayGridLeft, 
+                         displayGridBottom - displayGridTop); 
+                ctx.clip(); 
 
-                // Horizontale Linien zeichnen
-                // Draw horizontal lines
                 for (let r = 0; r <= currentGridSize; r++) {
                     const worldY = r * BASE_CELL_SIZE;
-                    // Berechne die Y-Position in Display-Pixeln und runde für Pixel-Perfektion
-                    // Calculate the Y-position in display pixels and round for pixel perfection
+
                     const displayY = Math.round((worldY - cameraY) * zoomLevel); 
                     
                     ctx.beginPath();
@@ -750,12 +562,9 @@
                     ctx.stroke();
                 }
 
-                // Vertikale Linien zeichnen
-                // Draw vertical lines
                 for (let c = 0; c <= currentGridSize; c++) {
                     const worldX = c * BASE_CELL_SIZE;
-                    // Berechne die X-Position in Display-Pixeln und runde für Pixel-Perfektion
-                    // Calculate the X-position in display pixels and round for pixel perfection
+
                     const displayX = Math.round((worldX - cameraX) * zoomLevel); 
                     
                     ctx.beginPath();
@@ -764,18 +573,16 @@
                     ctx.stroke();
                 }
 
-                ctx.restore(); // Remove clipping path
+                ctx.restore(); 
             };
 
-            // Main animation loop for the canvas
             const animationLoop = function() {
-                drawBoard(); // Call drawBoard directly
+                drawBoard(); 
 
                 let shouldContinueAnimation = false;
-                // Continue animation if game is active OR if any mine is marked as clicked (for persistent glow)
                 if (gameActive) {
                     shouldContinueAnimation = true;
-                } else if (isBoardReady) { // If game is over, check for any clicked mines for persistent glow
+                } else if (isBoardReady) { 
                     for (let r = 0; r < currentGridSize; r++) {
                         for (let c = 0; c < currentGridSize; c++) {
                             if (board[r] && board[r][c] && board[r][c].isClickedMine) {
@@ -793,73 +600,56 @@
             };
 
 
-            /**
-             * Passt die Canvas-Dimensionen an die feste interne Auflösung an und zeichnet neu.
-             * Adjusts canvas dimensions to fixed internal resolution and redraws.
-             */
+
             const resizeCanvas = function() {
-                // Reset internal canvas resolution based on current grid size
+
                 canvas.width = currentGridSize * BASE_CELL_SIZE;
                 canvas.height = currentGridSize * BASE_CELL_SIZE;
                 
-                // Recalculate zoom limits based on new canvas display dimensions
+
                 calculateDynamicZoomLimits(); 
-                // Ensure current zoom level is within new bounds (optional, but good practice)
+
                 zoomLevel = Math.max(dynamicMinZoom, Math.min(zoomLevel, dynamicMaxZoom));
                 
                 clampCamera();
                 drawBoard();
             };
 
-            /**
-             * Calculates and sets dynamic zoom limits based on current grid size and canvas dimensions.
-             */
             const calculateDynamicZoomLimits = function() {
                 const boardWorldWidth = currentGridSize * BASE_CELL_SIZE;
                 const boardWorldHeight = currentGridSize * BASE_CELL_SIZE;
 
-                // Min zoom: Ensure the entire board fits within the visible canvas area
-                // We use clientWidth/Height to get the *displayed* size of the canvas element
                 const canvasDisplayWidth = canvas.clientWidth;
                 const canvasDisplayHeight = canvas.clientHeight;
 
-                // Calculate the zoom level required for the board to fit
                 const zoomToFitWidth = canvasDisplayWidth / boardWorldWidth;
                 const zoomToFitHeight = canvasDisplayHeight / boardWorldHeight;
                 
-                // Take the smaller of the two to ensure the entire board is visible
-                dynamicMinZoom = Math.min(zoomToFitWidth, zoomToFitHeight) * 0.9; // 90% zoom to show slight border
-                
-                // Ensure dynamicMinZoom doesn't go below a certain absolute minimum (e.g., for very large grids)
-                dynamicMinZoom = Math.max(0.1, dynamicMinZoom); // Absolute floor for zoom out
 
-                // Max zoom: Target a comfortable maximum cell display size (e.g., 250px per cell)
-                // This ensures consistency across different native resolutions.
+                dynamicMinZoom = Math.min(zoomToFitWidth, zoomToFitHeight) * 0.9; 
+                
+
+                dynamicMinZoom = Math.max(0.1, dynamicMinZoom); 
+
                 dynamicMaxZoom = 250 / BASE_CELL_SIZE; 
-                // Cap at an absolute maximum to prevent extreme pixelation, e.g., 5.0
+
                 dynamicMaxZoom = Math.min(5.0, dynamicMaxZoom); 
             };
 
 
-            /**
-             * Initialisiert das Spielfeld für ein neues Spiel mit den gewählten Parametern.
-             * Initializes the game board for a new game with the chosen parameters.
-             * @param {number} gridSize - The size of the grid (e.g., 10 for 10x10).
-             * @param {number} numMines - The number of mines on the field.
-             */
             const initializeGame = function(gridSize = currentGridSize, numMines = currentNumMines) {
-                isBoardReady = false; // Set to false at the start of initialization
+                isBoardReady = false;
                 currentGridSize = gridSize;
                 currentNumMines = numMines;
 
-                // Reset canvas dimensions based on selected settings
+               
                 canvas.width = currentGridSize * BASE_CELL_SIZE;
                 canvas.height = currentGridSize * BASE_CELL_SIZE;
                 
-                calculateDynamicZoomLimits(); // Recalculate zoom limits when game initializes
-                zoomLevel = Math.max(1.0, dynamicMinZoom); // Set initial zoom level to 1.0 or zoomed out to fit, whichever is larger
+                calculateDynamicZoomLimits(); 
+                zoomLevel = Math.max(1.0, dynamicMinZoom); 
 
-                board = []; // Ensure the array is cleared
+                board = []; 
                 for (let r = 0; r < currentGridSize; r++) {
                     board[r] = [];
                     for (let c = 0; c < currentGridSize; c++) {
@@ -867,13 +657,12 @@
                             isMine: false,
                             state: CELL_COVERED,
                             adjacentMines: 0,
-                            isClickedMine: false, // Reset clicked mine state
-                            // Removed detonationTime as it's no longer needed for continuous glow
+                            isClickedMine: false, 
                         };
                     }
                 }
                 
-                isBoardReady = true; // Set to true after board is fully populated
+                isBoardReady = true;
 
                 revealedCount = 0;
                 gameActive = true;
@@ -883,7 +672,7 @@
                 hoveredCell = { row: -1, col: -1 };
                 
                 cameraX = 0;
-                cameraY = 0; // Reset camera position for new game
+                cameraY = 0; 
 
                 gameMessage.textContent = '';
                 gameMessage.classList.remove('text-green-400', 'text-red-400');
@@ -891,15 +680,10 @@
 
                 updateMineCountDisplay();
                 startTimer();
-                requestAnimationFrame(animationLoop); // Start the animation loop
+                requestAnimationFrame(animationLoop); 
             };
 
-            // --- Event Listener Registration ---
-            // Event handlers are now defined directly as anonymous functions,
-            // to avoid reference errors and maximize robustness.
-
             canvas.addEventListener('mousedown', function(event) {
-                // Pan/Zoom controls should always work, regardless of gameActive
                 const worldCoords = getMouseWorldCoordinates(event);
                 dragStartWorldX = worldCoords.x;
                 dragStartWorldY = worldCoords.y;
@@ -907,10 +691,9 @@
                 initialClickX = event.clientX;
                 initialClickY = event.clientY;
 
-                if (event.button === 0) { // Left click
+                if (event.button === 0) { 
                     isDragging = true;
-                } else if (event.button === 2) { // Right click
-                    // Only allow flagging if the game is active
+                } else if (event.button === 2) {
                     if (gameActive) {
                         const col = Math.floor(worldCoords.x / BASE_CELL_SIZE);
                         const row = Math.floor(worldCoords.y / BASE_CELL_SIZE);
@@ -922,24 +705,20 @@
             });
 
             canvas.addEventListener('mouseup', function(event) {
-                // If the game is not active, reset isDragging but still allow map interaction
                 if (!gameActive) {
                     isDragging = false;
                     return;
                 }
                 
-                // Only react if left click is released and game is active
                 if (event.button === 0) {
-                    // Check if it was a click (and not a drag)
                     const distMovedX = Math.abs(event.clientX - initialClickX);
                     const distMovedY = Math.abs(event.clientY - initialClickY);
 
                     if (distMovedX < DRAG_THRESHOLD && distMovedY < DRAG_THRESHOLD) {
-                        const worldCoords = getMouseWorldCoordinates(event); // Get world coordinates again, as camera might have moved
+                        const worldCoords = getMouseWorldCoordinates(event);
                         const col = Math.floor(worldCoords.x / BASE_CELL_SIZE);
                         const row = Math.floor(worldCoords.y / BASE_CELL_SIZE);
 
-                        // Check if the cell is within a valid range
                         if (row >= 0 && row < currentGridSize && col >= 0 && col < currentGridSize) {
                             if (isFirstClick) {
                                 placeMines(row, col);
@@ -948,7 +727,7 @@
                             uncoverCell(row, col);
                         }
                     }
-                    isDragging = false; // Reset isDragging after mouse up
+                    isDragging = false; 
                 }
             });
 
@@ -957,21 +736,19 @@
             });
 
             canvas.addEventListener('mousemove', function(event) {
-                // Always update current hovered cell, but only apply hover effect if game is active
                 const worldCoords = getMouseWorldCoordinates(event);
                 const col = Math.floor(worldCoords.x / BASE_CELL_SIZE);
                 const row = Math.floor(worldCoords.y / BASE_CELL_SIZE);
 
-                // Update hoveredCell
+              
                 if (row !== hoveredCell.row || col !== hoveredCell.col) {
                     hoveredCell = { row: row, col: col };
-                    // Only redraw for hover effect if game is active. Otherwise, let animation loop handle it.
                     if (gameActive) { 
                         drawBoard(); 
                     }
                 }
 
-                // If currently dragging, move the camera (Grab and Drag) - always allow this
+             
                 if (isDragging) {
                     const rect = canvas.getBoundingClientRect();
                     const canvasDisplayX = event.clientX - rect.left;
@@ -979,20 +756,18 @@
                     const canvasInternalY = event.clientY - rect.top; 
                     const scaledCanvasInternalY = canvasInternalY * (canvas.height / rect.height);
                     
-                    // Calculate the new camera position so that dragStartWorldX/Y remains under the current mouse pointer
                     cameraX = dragStartWorldX - (canvasInternalX / zoomLevel);
                     cameraY = dragStartWorldY - (scaledCanvasInternalY / zoomLevel); 
                     
-                    clampCamera(); // Clamp camera to boundaries
-                    drawBoard(); // Redraw board
+                    clampCamera(); 
+                    drawBoard();
                 }
             });
 
             canvas.addEventListener('mouseleave', function(event) {
-                isDragging = false; // Stop dragging if mouse leaves the canvas
+                isDragging = false; 
                 if (hoveredCell.row !== -1 || hoveredCell.col !== -1) {
                     hoveredCell = { row: -1, col: -1 };
-                    // Only redraw to remove hover effect if game is active. Otherwise, animation loop will handle it.
                     if (gameActive) { 
                         drawBoard(); 
                     }
@@ -1000,63 +775,48 @@
             });
 
             canvas.addEventListener('wheel', function(event) {
-                event.preventDefault(); // Prevent default scroll behavior
+                event.preventDefault(); 
 
-                // Always allow zooming, regardless of gameActive state
-                const scaleFactor = 1.1; // Zoom factor
-                const mouseWorld = getMouseWorldCoordinates(event); // Mouse position in world coordinates
+                const scaleFactor = 1.1; 
+                const mouseWorld = getMouseWorldCoordinates(event);
 
                 const oldZoomLevel = zoomLevel;
 
-                if (event.deltaY < 0) { // Mouse wheel up = Zoom In
+                if (event.deltaY < 0) { 
                     zoomLevel *= scaleFactor;
-                } else { // Mouse wheel down = Zoom Out
+                } else { 
                     zoomLevel /= scaleFactor;
                 }
-
-                // Clamp zoomLevel using dynamic limits
                 zoomLevel = Math.max(dynamicMinZoom, Math.min(zoomLevel, dynamicMaxZoom));
 
                 cameraX += (mouseWorld.x - cameraX) * (1 - oldZoomLevel / zoomLevel);
                 cameraY += (mouseWorld.y - cameraY) * (1 - oldZoomLevel / zoomLevel);
 
-                clampCamera(); // Clamp camera to boundaries
-                drawBoard(); // Redraw board
+                clampCamera();
+                drawBoard(); 
             });
 
             resetButton.addEventListener('click', function() {
-                difficultyModal.classList.remove('hidden'); // Show modal on reset
-                highlightActiveDifficultyButton(); // Highlight current selection when modal opens
+                difficultyModal.classList.remove('hidden'); 
+                highlightActiveDifficultyButton();
             });
             window.addEventListener('resize', resizeCanvas);
 
-            // --- Difficulty Selection Logic ---
-
-            // Function to highlight the active difficulty button/container
             const highlightActiveDifficultyButton = function(selectedButtonId = null) {
-                // Remove highlight from all PRESET buttons
                 presetDifficultyButtons.forEach(btn => btn.classList.remove('border-2', 'border-yellow-400', 'shadow-lg'));
-                // Remove highlight from the custom container
                 customSettingsContainer.classList.remove('border-2', 'border-yellow-400', 'shadow-lg');
-                // Hide custom settings by default
                 customSettingsDiv.classList.add('hidden');
-
-                // Now, add highlight based on explicit selection or current state
                 if (selectedButtonId) {
                     if (selectedButtonId !== 'customDifficultyButton') {
-                        // If a preset button was clicked
                         const selectedButton = document.getElementById(selectedButtonId);
                         if (selectedButton) {
                             selectedButton.classList.add('border-2', 'border-yellow-400', 'shadow-lg');
                         }
                     } else {
-                        // If custom button was explicitly selected
-                        customSettingsDiv.classList.remove('hidden'); // Show custom settings
-                        customSettingsContainer.classList.add('border-2', 'border-yellow-400', 'shadow-lg'); // Highlight the entire custom container
+                        customSettingsDiv.classList.remove('hidden'); 
+                        customSettingsContainer.classList.add('border-2', 'border-yellow-400', 'shadow-lg'); 
                     }
                 } else {
-                    // This block runs when modal is initially opened or reset.
-                    // Determine based on currentGridSize/currentNumMines which preset is active.
                     let activePresetButton = null;
                     if (currentGridSize === 10 && currentNumMines === 10) {
                         activePresetButton = document.getElementById('easyDifficultyButton');
@@ -1069,9 +829,8 @@
                     if (activePresetButton) {
                         activePresetButton.classList.add('border-2', 'border-yellow-400', 'shadow-lg');
                     } else {
-                        // If none of the presets match, it's a custom setting
-                        customSettingsDiv.classList.remove('hidden'); // Ensure custom settings are visible
-                        customSettingsContainer.classList.add('border-2', 'border-yellow-400', 'shadow-lg'); // Highlight custom container
+                        customSettingsDiv.classList.remove('hidden'); 
+                        customSettingsContainer.classList.add('border-2', 'border-yellow-400', 'shadow-lg'); 
                     }
                 }
             };
@@ -1090,44 +849,37 @@
                         currentGridSize = 20;
                         currentNumMines = 80;
                     }
-                    gridSizeSlider.value = currentGridSize; // Update custom slider for consistency
-                    updateCustomDisplays(currentGridSize); // Update slider displays
-                    mineCountWarning.classList.add('hidden'); // Hide warning if switching from custom
-                    highlightActiveDifficultyButton(this.id); // Pass the ID of the clicked button
-                    validateCustomGameSettings(); // Validate after setting new values
+                    gridSizeSlider.value = currentGridSize; 
+                    updateCustomDisplays(currentGridSize); 
+                    mineCountWarning.classList.add('hidden'); 
+                    highlightActiveDifficultyButton(this.id); 
+                    validateCustomGameSettings(); 
                 });
             });
 
             customDifficultyButton.addEventListener('click', function() {
-                // When Custom button is clicked, ensure currentGridSize reflects slider value
-                // and calculate mines based on it.
-                currentGridSize = parseInt(gridSizeSlider.value); // Get current value from slider
+                currentGridSize = parseInt(gridSizeSlider.value);
                 currentNumMines = Math.max(1, Math.floor(currentGridSize * currentGridSize * CUSTOM_MINE_DENSITY_RATIO));
                 
-                highlightActiveDifficultyButton(this.id); // Pass the ID of the clicked button
-                updateCustomDisplays(currentGridSize); // Ensure custom displays are updated
-                validateCustomGameSettings(); // Validate
+                highlightActiveDifficultyButton(this.id); 
+                updateCustomDisplays(currentGridSize); 
+                validateCustomGameSettings();
             });
 
             gridSizeSlider.addEventListener('input', function() {
-                // Get the value directly from the slider
                 let newSize = parseInt(this.value);
-                // The slider itself handles min/max, so we just use its value
                 currentGridSize = newSize;
-                
-                // Recalculate mine count based on the current grid size from slider
+
                 let calculatedMines = Math.floor(currentGridSize * currentGridSize * CUSTOM_MINE_DENSITY_RATIO);
                 const totalCells = currentGridSize * currentGridSize;
-                const maxAllowedMines = totalCells - 9; // At least 9 safe cells for the first click
+                const maxAllowedMines = totalCells - 9; 
                 
-                // Limit mine count
+       
                 currentNumMines = Math.max(1, Math.min(calculatedMines, maxAllowedMines));
 
                 updateCustomDisplays(currentGridSize);
                 validateCustomGameSettings();
             });
-
-            // Function to update the displayed grid size and calculated mines in the custom section
             const updateCustomDisplays = function(size) {
                 gridSizeDisplay.textContent = size;
                 gridSizeDisplay2.textContent = size;
@@ -1136,9 +888,8 @@
 
 
             const validateCustomGameSettings = function() {
-                // currentGridSize is taken directly from the global variable here
                 const totalCells = currentGridSize * currentGridSize;
-                const maxAllowedMines = totalCells - 9; // At least 9 safe cells for the first click
+                const maxAllowedMines = totalCells - 9;
                 
                 let isValid = true;
                 let warningMessage = '';
@@ -1147,8 +898,7 @@
                     isValid = false;
                     warningMessage = 'Grid size must be between 5 and 50.';
                 } else if (currentNumMines < 1 || currentNumMines >= maxAllowedMines) {
-                    // This case should normally be avoided by the calculation of currentNumMines,
-                    // but it's a safety measure in case the logic changes or the ratio is extreme.
+
                     isValid = false;
                     warningMessage = `Mine count (${currentNumMines}) is invalid for a ${currentGridSize}x${currentGridSize} grid.`;
                 }
@@ -1167,24 +917,18 @@
 
 
             startGameButton.addEventListener('click', function() {
-                // On clicking "Start Game", use the last valid (or clamped) values
-                // currentGridSize and currentNumMines should already be up-to-date due to input listeners
-                
-                // Ensure values are within limits (final clamp)
+
                 currentGridSize = Math.max(5, Math.min(currentGridSize, 50));
                 const maxAllowedMinesAtStart = (currentGridSize * currentGridSize) - 9;
                 currentNumMines = Math.max(1, Math.min(currentNumMines, maxAllowedMinesAtStart));
                 
-                // Hide modal and initialize game
                 difficultyModal.classList.add('hidden');
                 initializeGame(currentGridSize, currentNumMines);
             });
 
-            // Show modal on page load
             difficultyModal.classList.remove('hidden');
-            // Also perform validation for the Start Game button on initial modal display
-            highlightActiveDifficultyButton(); // Initial highlight
-            updateCustomDisplays(currentGridSize); // Initial update of custom displays
+            highlightActiveDifficultyButton(); 
+            updateCustomDisplays(currentGridSize); 
             validateCustomGameSettings(); 
         };
     </script>
