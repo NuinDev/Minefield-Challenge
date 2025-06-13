@@ -74,9 +74,14 @@
     </style>
 </head>
 <body class="selection:bg-blue-600 bg-gray-900">
-    <!-- Ad container - Fixed position on larger screens -->
+    <!-- Ad container left - Fixed position on larger screens -->
     <div class="hidden md:block p-4 rounded-lg border border-gray-700 bg-gray-700 shadow-md fixed left-6 top-1/2 transform -translate-y-1/2 z-[51]" style="width: 154px; height: 634px;">
         <iframe data-aa='2398453' src='//ad.a-ads.com/2398453?size=120x600' style='width:120px; height:600px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
+    </div>
+
+    <!-- Ad container right - Fixed position on larger screens -->
+    <div class="hidden md:block p-4 rounded-lg border border-gray-700 bg-gray-700 shadow-md fixed right-6 top-1/2 transform -translate-y-1/2 z-[51]" style="width: 154px; height: 634px;">
+        <iframe data-aa='2398457' src='//ad.a-ads.com/2398457?size=120x600' style='width:120px; height:600px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
     </div>
 
     <!-- Main game content container - This is now truly centered on the page -->
@@ -109,10 +114,10 @@
         </div>
     </div>
 
-    <!-- New: Separate backdrop for the modal -->
+    <!-- Separate backdrop for the modal -->
     <div id="modalBackdrop" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-[49]"></div>
 
-    <!-- New: Modal content (the actual popup box) -->
+    <!-- Modal content (the actual popup box) -->
     <div id="difficultyModal" class="fixed inset-0 flex items-center justify-center z-[50] p-4 hidden">
         <div class="bg-gray-800 p-8 rounded-lg shadow-xl max-w-sm w-full border border-blue-600">
             <h2 class="text-3xl font-bold text-gray-100 mb-6 text-center">Choose Difficulty</h2>
@@ -120,7 +125,7 @@
             <div class="space-y-4">
                 <button id="easyDifficultyButton" class="difficulty-button w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 transition duration-300" data-difficulty="easy">Easy (10x10, 10 Mines)</button>
                 <button id="mediumDifficultyButton" class="difficulty-button w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 transition duration-300" data-difficulty="medium">Medium (16x16, 40 Mines)</button>
-                <button id="hardDifficultyButton" class="w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 transition duration-300" data-difficulty="hard">Hard (20x20, 80 Mines)</button>
+                <button id="hardDifficultyButton" class="difficulty-button w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 transition duration-300" data-difficulty="hard">Hard (20x20, 80 Mines)</button>
             </div>
 
             <div id="customSettingsContainer" class="mt-4 space-y-4 rounded-lg p-2">
@@ -151,9 +156,8 @@
             const gameMessage = document.getElementById('game-message');
             const mineCountDisplay = document.getElementById('mine-count');
             const timerDisplay = document.getElementById('timer');
-            // MODAL CHANGES: Get backdrop and the modal content div
             const modalBackdrop = document.getElementById('modalBackdrop');
-            const difficultyModal = document.getElementById('difficultyModal'); // This is now the centered container for the actual popup
+            const difficultyModal = document.getElementById('difficultyModal');
             const presetDifficultyButtons = document.querySelectorAll('.difficulty-button:not(#customDifficultyButton)'); 
             const customDifficultyButton = document.getElementById('customDifficultyButton');
             const customSettingsContainer = document.getElementById('customSettingsContainer');
@@ -956,6 +960,8 @@
                 }
             });
 
+            // State variable to track if custom mode is explicitly selected
+            let isCustomModeActive = false;
 
             resetButton.addEventListener('click', function() {
                 // Show both the backdrop and the modal content
@@ -965,34 +971,35 @@
             });
             window.addEventListener('resize', resizeCanvas);
 
-            const highlightActiveDifficultyButton = function(selectedButtonId = null) {
+            // Refined highlightActiveDifficultyButton function
+            const highlightActiveDifficultyButton = function() {
+                // Remove highlight from all preset buttons and custom container
                 presetDifficultyButtons.forEach(btn => btn.classList.remove('border-2', 'border-yellow-400', 'shadow-lg'));
                 customSettingsContainer.classList.remove('border-2', 'border-yellow-400', 'shadow-lg');
-                customSettingsDiv.classList.add('hidden');
+                customSettingsDiv.classList.add('hidden'); // Ensure custom settings are hidden initially or when a preset is chosen
 
-                if (selectedButtonId) {
-                    if (selectedButtonId !== 'customDifficultyButton') {
-                        const selectedButton = document.getElementById(selectedButtonId);
-                        if (selectedButton) {
-                            selectedButton.classList.add('border-2', 'border-yellow-400', 'shadow-lg');
-                        }
-                    } else {
-                        customSettingsDiv.classList.remove('hidden');
-                        customSettingsContainer.classList.add('border-2', 'border-yellow-400', 'shadow-lg');
-                    }
+                if (isCustomModeActive) {
+                    // If custom mode is explicitly active, always highlight it
+                    customSettingsDiv.classList.remove('hidden');
+                    customSettingsContainer.classList.add('border-2', 'border-yellow-400', 'shadow-lg');
                 } else {
-                    let activePresetButton = null;
+                    // Otherwise, determine which preset button should be active based on current game settings
+                    let selectedId = null;
                     if (currentGridSize === 10 && currentNumMines === 10) {
-                        activePresetButton = document.getElementById('easyDifficultyButton');
+                        selectedId = 'easyDifficultyButton';
                     } else if (currentGridSize === 16 && currentNumMines === 40) {
-                        activePresetButton = document.getElementById('mediumDifficultyButton');
+                        selectedId = 'mediumDifficultyButton';
                     } else if (currentGridSize === 20 && currentNumMines === 80) {
-                        activePresetButton = document.getElementById('hardDifficultyButton');
+                        selectedId = 'hardDifficultyButton';
                     }
 
-                    if (activePresetButton) {
-                        activePresetButton.classList.add('border-2', 'border-yellow-400', 'shadow-lg');
+                    if (selectedId) {
+                        // If a preset matches, highlight it
+                        document.getElementById(selectedId).classList.add('border-2', 'border-yellow-400', 'shadow-lg');
                     } else {
+                        // If no preset matches, it must be custom, so set custom mode to active and highlight it.
+                        // This case handles initial load if settings are custom by default.
+                        isCustomModeActive = true;
                         customSettingsDiv.classList.remove('hidden');
                         customSettingsContainer.classList.add('border-2', 'border-yellow-400', 'shadow-lg');
                     }
@@ -1016,21 +1023,27 @@
                     gridSizeSlider.value = currentGridSize;
                     updateCustomDisplays(currentGridSize);
                     mineCountWarning.classList.add('hidden');
-                    highlightActiveDifficultyButton(this.id);
+                    isCustomModeActive = false; // Set custom mode to false when a preset is chosen
+                    highlightActiveDifficultyButton(); 
                     validateCustomGameSettings();
                 });
             });
 
             customDifficultyButton.addEventListener('click', function() {
+                isCustomModeActive = true; // Set custom mode to true when custom button is clicked
+                highlightActiveDifficultyButton(); 
+
                 currentGridSize = parseInt(gridSizeSlider.value);
                 currentNumMines = Math.max(1, Math.floor(currentGridSize * currentGridSize * CUSTOM_MINE_DENSITY_RATIO));
                 
-                highlightActiveDifficultyButton(this.id);
                 updateCustomDisplays(currentGridSize);
                 validateCustomGameSettings();
             });
 
             gridSizeSlider.addEventListener('input', function() {
+                // When slider is moved, it implies we are in custom mode
+                isCustomModeActive = true; 
+
                 let newSize = parseInt(this.value);
                 currentGridSize = newSize;
                 
@@ -1041,8 +1054,10 @@
                 currentNumMines = Math.max(1, Math.min(calculatedMines, maxAllowedMines));
 
                 updateCustomDisplays(currentGridSize);
+                highlightActiveDifficultyButton(); 
                 validateCustomGameSettings();
             });
+
 
             const updateCustomDisplays = function(size) {
                 gridSizeDisplay.textContent = size;
@@ -1083,7 +1098,6 @@
                 const maxAllowedMinesAtStart = (currentGridSize * currentGridSize) - 9;
                 currentNumMines = Math.max(1, Math.min(currentNumMines, maxAllowedMinesAtStart));
                 
-                // Hide both the backdrop and the modal content
                 modalBackdrop.classList.add('hidden');
                 difficultyModal.classList.add('hidden');
                 initializeGame(currentGridSize, currentNumMines);
