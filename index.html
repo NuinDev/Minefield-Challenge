@@ -89,12 +89,6 @@
     <div class="flex flex-col items-center p-6 bg-gray-800 rounded-xl shadow-2xl max-w-lg w-full relative">
         <h1 class="text-4xl font-extrabold text-gray-100 mb-6 tracking-tight">Minefield Challenge</h1>
         
-        <button id="info-button" class="absolute top-6 right-6 text-gray-300 hover:text-blue-400 transition-colors duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-        </button>
-
         <div class="flex justify-between w-full mb-4 px-2">
             <div class="flex items-center text-gray-300 text-lg font-semibold">
                 <span id="mine-count" class="mr-2">Mines: --</span>
@@ -117,6 +111,12 @@
         <div class="flex justify-center space-x-4 mt-8 w-full">
             <button id="reset-button" class="px-6 py-3 bg-blue-700 text-white font-bold rounded-lg shadow-md hover:bg-blue-800 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-75">
                 New Game
+            </button>
+            <button id="info-button" class="px-6 py-3 bg-blue-700 text-white font-bold rounded-lg shadow-md hover:bg-blue-800 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-75 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Info
             </button>
         </div>
     </div>
@@ -159,17 +159,17 @@
             <div class="text-left">
                 <h4 class="text-lg font-semibold mb-2">PC Controls:</h4>
                 <ul class="list-disc list-inside mb-4">
-                    <li>**Left Click:** Reveal a cell.</li>
-                    <li>**Right Click:** Toggle Flag/Question Mark.</li>
-                    <li>**Mouse Wheel:** Zoom in/out.</li>
-                    <li>**Drag (Left Click):** Pan the board.</li>
+                    <li><strong>Left Click:</strong> Reveal a cell.</li>
+                    <li><strong>Right Click:</strong> Toggle Flag/Question Mark.</li>
+                    <li><strong>Mouse Wheel:</strong> Zoom in/out.</li>
+                    <li><strong>Drag (Left Click):</strong> Pan the board.</li>
                 </ul>
                 <h4 class="text-lg font-semibold mb-2">Mobile Controls:</h4>
                 <ul class="list-disc list-inside mb-4">
-                    <li>**Tap (single finger):** Reveal a cell.</li>
-                    <li>**Long Press (single finger):** Toggle Flag/Question Mark.</li>
-                    <li>**Pinch (two fingers):** Zoom in/out.</li>
-                    <li>**Drag (single finger):** Pan the board.</li>
+                    <li><strong>Tap (single finger):</strong> Reveal a cell.</li>
+                    <li><strong>Long Press (single finger):</strong> Toggle Flag/Question Mark.</li>
+                    <li><strong>Pinch (two fingers):</strong> Zoom in/out.</li>
+                    <li><strong>Drag (single finger):</strong> Pan the board.</li>
                 </ul>
             </div>
             <button id="closeInstructionsButton" class="px-5 py-2 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 transition duration-300 mt-4">Got it!</button>
