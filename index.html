@@ -8,44 +8,49 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1a202c; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh; 
+            background-color: #1a202c;
             margin: 0;
-            padding: 20px; 
-            box-sizing: border-box; 
+            padding: 0;
+            box-sizing: border-box;
+            /* Flexbox for centering its direct children (the main game box) */
+            display: flex;
+            justify-content: center; /* Horizontally center */
+            align-items: center;    /* Vertically center */
+            min-height: 100vh;      /* Ensure it takes full viewport height */
+            padding: 20px;          /* Add some padding for smaller screens if content overflows */
         }
         canvas {
-            border-radius: 0.75rem; 
-            background-color: #2d3748; 
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15); 
+            border-radius: 0.75rem;
+            background-color: #2d3748;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
             display: block;
-            max-width: 100%; 
-            height: auto; 
-            cursor: default; 
+            max-width: 100%;
+            height: auto;
+            cursor: default;
         }
-        .text-1 { color: #63b3ed; } 
-        .text-2 { color: #68d391; } 
-        .text-3 { color: #f6ad55; } 
-        .text-4 { color: #a78bfa; } 
-        .text-5 { color: #f06292; } 
-        .text-6 { color: #4fd1c5; } 
-        .text-7 { color: #e2e8f0; } 
-        .text-8 { color: #f7fafc; } 
+
+        .text-1 { color: #63b3ed; }
+        .text-2 { color: #68d391; }
+        .text-3 { color: #f6ad55; }
+        .text-4 { color: #a78bfa; }
+        .text-5 { color: #f06292; }
+        .text-6 { color: #4fd1c5; }
+        .text-7 { color: #e2e8f0; }
+        .text-8 { color: #f7fafc; }
+
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 20px; 
-            height: 20px; 
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            background: #63b3ed; 
+            background: #63b3ed;
             cursor: pointer;
-            border: 2px solid #3182ce; 
+            border: 2px solid #3182ce;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-            margin-top: -8px; 
+            margin-top: -8px;
         }
+
         input[type="range"]::-moz-range-thumb {
             width: 20px;
             height: 20px;
@@ -55,11 +60,13 @@
             border: 2px solid #3182ce;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         }
+
         input[type="range"]::-webkit-slider-runnable-track {
-            height: 4px; 
+            height: 4px;
             background: #4a5568;
             border-radius: 2px;
         }
+
         input[type="range"]::-moz-range-track {
             height: 4px;
             background: #4a5568;
@@ -67,9 +74,16 @@
         }
     </style>
 </head>
-<body class="selection:bg-blue-600">
-    <div class="flex flex-col items-center p-6 bg-gray-800 rounded-xl shadow-2xl max-w-lg mx-auto w-full">
+<body class="selection:bg-blue-600 bg-gray-900">
+    <!-- Ad container - Fixed position on larger screens, relative to viewport -->
+    <div class="hidden md:flex flex-col items-center p-4 rounded-lg border border-gray-700 bg-gray-700 shadow-md fixed left-6 top-1/2 transform -translate-y-1/2 z-10">
+        <iframe data-aa='2398453' src='//ad.a-ads.com/2398453?size=120x600' style='width:120px; height:600px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
+    </div>
+
+    <!-- Main game content container - This is now truly centered on the page, unaffected by the ad's position -->
+    <div class="flex flex-col items-center p-6 bg-gray-800 rounded-xl shadow-2xl max-w-lg w-full">
         <h1 class="text-4xl font-extrabold text-gray-100 mb-6 tracking-tight">Minefield Challenge</h1>
+
         <div class="flex justify-between w-full mb-4 px-2">
             <div class="flex items-center text-gray-300 text-lg font-semibold">
                 <span id="mine-count" class="mr-2">Mines: --</span>
@@ -84,14 +98,18 @@
                 </svg>
             </div>
         </div>
+
         <canvas id="minefieldCanvas" class="border-4 border-blue-600"></canvas>
+
         <div id="game-message" class="mt-6 text-xl font-bold text-center text-gray-100"></div>
+
         <div class="flex justify-center space-x-4 mt-8 w-full">
             <button id="reset-button" class="px-6 py-3 bg-blue-700 text-white font-bold rounded-lg shadow-md hover:bg-blue-800 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-75">
                 New Game
             </button>
         </div>
     </div>
+
     <div id="difficultyModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 p-4">
         <div class="bg-gray-800 p-8 rounded-lg shadow-xl max-w-sm w-full border border-blue-600">
             <h2 class="text-3xl font-bold text-gray-100 mb-6 text-center">Choose Difficulty</h2>
@@ -101,9 +119,10 @@
                 <button id="mediumDifficultyButton" class="difficulty-button w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 transition duration-300" data-difficulty="medium">Medium (16x16, 40 Mines)</button>
                 <button id="hardDifficultyButton" class="difficulty-button w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 transition duration-300" data-difficulty="hard">Hard (20x20, 80 Mines)</button>
             </div>
+
             <div id="customSettingsContainer" class="mt-4 space-y-4 rounded-lg p-2">
                 <button id="customDifficultyButton" class="w-full py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-300">Custom</button>
-                <div id="customSettings" class="space-y-4 pt-4 hidden"> 
+                <div id="customSettings" class="space-y-4 pt-4 hidden">
                     <div>
                         <label for="gridSizeSlider" class="block text-gray-300 text-sm font-bold mb-2">Grid Size: <span id="gridSizeDisplay">16</span>x<span id="gridSizeDisplay2">16</span></label>
                         <input type="range" id="gridSizeSlider" min="5" max="50" value="16" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
@@ -114,11 +133,13 @@
                     <p id="mineCountWarning" class="text-red-400 text-xs italic mt-1 hidden">Grid size must be between 5 and 50.</p>
                 </div>
             </div>
+
             <button id="startGameButton" class="w-full mt-8 px-6 py-3 bg-green-700 text-white font-bold rounded-lg shadow-md hover:bg-green-800 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-75">
                 Start Game
             </button>
         </div>
     </div>
+
     <script>
         window.onload = function() {
             const canvas = document.getElementById('minefieldCanvas');
@@ -130,29 +151,44 @@
             const difficultyModal = document.getElementById('difficultyModal');
             const presetDifficultyButtons = document.querySelectorAll('.difficulty-button:not(#customDifficultyButton)'); 
             const customDifficultyButton = document.getElementById('customDifficultyButton');
-            const customSettingsContainer = document.getElementById('customSettingsContainer'); 
-            const customSettingsDiv = document.getElementById('customSettings'); 
+            const customSettingsContainer = document.getElementById('customSettingsContainer');
+            const customSettingsDiv = document.getElementById('customSettings');
             const gridSizeSlider = document.getElementById('gridSizeSlider'); 
             const gridSizeDisplay = document.getElementById('gridSizeDisplay');
-            const gridSizeDisplay2 = document.getElementById('gridSizeDisplay2'); 
+            const gridSizeDisplay2 = document.getElementById('gridSizeDisplay2');
             const calculatedMinesDisplay = document.getElementById('calculatedMinesDisplay');
             const mineCountWarning = document.getElementById('mineCountWarning');
             const startGameButton = document.getElementById('startGameButton');
+
             let currentGridSize = 16;
             let currentNumMines = 40;
             const BASE_CELL_SIZE = 60;
-            const CUSTOM_MINE_DENSITY_RATIO = 80 / (20 * 20); // 0.2
-            let dynamicMinZoom = 0.5; 
-            let dynamicMaxZoom = 3.0; 
+            const CUSTOM_MINE_DENSITY_RATIO = 80 / (20 * 20);
+
+            let dynamicMinZoom = 0.5;
+            let dynamicMaxZoom = 3.0;
+
             canvas.width = currentGridSize * BASE_CELL_SIZE;
             canvas.height = currentGridSize * BASE_CELL_SIZE;
+
             let cameraX = 0;
             let cameraY = 0;
             let zoomLevel = 1.0;
+            
             let isDragging = false;
-            let dragStartWorldX, dragStartWorldY; 
-            let initialClickX, initialClickY; 
+            let dragStartWorldX, dragStartWorldY;
+            let initialClickX, initialClickY;
             const DRAG_THRESHOLD = 5;
+
+            let touchStartX, touchStartY;
+            let touchStartTime;
+            let hasMoved = false;
+            let isPinching = false;
+            let initialPinchDistance = 0;
+            let initialPinchCenter = { x: 0, y: 0 };
+            const TAP_THRESHOLD_MS = 200;
+            const TAP_MOVE_THRESHOLD = 10;
+
             let board = [];
             let revealedCount = 0;
             let gameActive = false;
@@ -161,18 +197,20 @@
             let secondsElapsed = 0;
             let isFirstClick = true;
             let hoveredCell = { row: -1, col: -1 };
-            let isBoardReady = false; 
+            let isBoardReady = false;
+
             const CELL_COVERED = 0;
             const CELL_REVEALED = 1;
             const CELL_FLAGGED = 2;
             const CELL_MINE = 3;
+
             const COLORS = {
                 covered: '#4a5568',
                 revealed: '#2d3748',
                 flag: '#e53e3e',
                 mine: '#cbd5e1',
-                clickedMine: '#f56565', 
-                hoverEffect: '#FFDD66', 
+                clickedMine: '#f56565',
+                hoverEffect: '#FFDD66',
                 gridLine: '#9ca3af',
                 text: {
                     1: '#63b3ed',
@@ -185,6 +223,7 @@
                     8: '#f7fafc'
                 }
             };
+
             const countAdjacentMines = function(row, col) {
                 let count = 0;
                 for (let dr = -1; dr <= 1; dr++) {
@@ -203,32 +242,38 @@
                 }
                 return count;
             };
+
             const drawMine = function(x, y, size, color, isDetonated = false) {
                 const centerX = x + size / 2;
                 const centerY = y + size / 2;
 
                 if (isDetonated) {
-                    const baseRadius = size * 0.3; 
-                    const pulseIntensity = 0.1; 
-                    const pulseSpeed = 0.01; 
+                    const baseRadius = size * 0.3;
+                    const pulseIntensity = 0.1;
+                    const pulseSpeed = 0.01;
+
                     const pulseOffset = Math.sin(Date.now() * pulseSpeed) * pulseIntensity;
                     const currentRadius = baseRadius * (1 + pulseOffset);
+
                     ctx.beginPath();
                     ctx.arc(centerX, centerY, currentRadius * 1.5, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255, 0, 0, ${0.4 * (1 - pulseOffset)})`; 
+                    ctx.fillStyle = `rgba(255, 0, 0, ${0.4 * (1 - pulseOffset)})`;
                     ctx.fill();
                     ctx.closePath();
+
                     ctx.beginPath();
                     ctx.arc(centerX, centerY, currentRadius * 1.0, 0, Math.PI * 2);
                     ctx.fillStyle = `rgba(255, 165, 0, ${0.6 * (1 - pulseOffset)})`;
                     ctx.fill();
                     ctx.closePath();
                 }
-                ctx.fillStyle = color; 
+
+                ctx.fillStyle = color;
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, size / 4, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.closePath();
+
                 for (let i = 0; i < 8; i++) {
                     const angle = (Math.PI / 4) * i;
                     const innerX = centerX + Math.cos(angle) * (size / 4);
@@ -238,12 +283,14 @@
                     ctx.beginPath();
                     ctx.moveTo(innerX, innerY);
                     ctx.lineTo(outerX, outerY);
-                    ctx.strokeStyle = 'white'; 
+                    ctx.strokeStyle = 'white';
                     ctx.lineWidth = 2 / zoomLevel;
                     ctx.stroke();
                     ctx.closePath();
                 }
             };
+
+
             const drawFlag = function(x, y, size) {
                 ctx.fillStyle = COLORS.flag;
                 ctx.fillRect(x + size / 2 - 1 / zoomLevel, y + size / 4, 2 / zoomLevel, size / 2);
@@ -254,10 +301,25 @@
                 ctx.closePath();
                 ctx.fill();
             };
-            const getMouseWorldCoordinates = function(event) {
+
+            const getEventWorldCoordinates = function(event) {
                 const rect = canvas.getBoundingClientRect();
-                const canvasDisplayX = event.clientX - rect.left;
-                const canvasDisplayY = event.clientY - rect.top;
+                let clientX, clientY;
+
+                if (event.touches && event.touches.length > 0) {
+                    clientX = event.touches[0].clientX;
+                    clientY = event.touches[0].clientY;
+                } else if (event.changedTouches && event.changedTouches.length > 0) {
+                    clientX = event.changedTouches[0].clientX;
+                    clientY = event.changedTouches[0].clientY;
+                } else {
+                    clientX = event.clientX;
+                    clientY = event.clientY;
+                }
+
+                const canvasDisplayX = clientX - rect.left;
+                const canvasDisplayY = clientY - rect.top;
+
                 const canvasInternalX = canvasDisplayX * (canvas.width / rect.width);
                 const canvasInternalY = canvasDisplayY * (canvas.height / rect.height);
 
@@ -267,13 +329,24 @@
                 return { x: worldX, y: worldY };
             };
 
+            const getDistance = (t1, t2) => {
+                return Math.sqrt(Math.pow(t2.clientX - t1.clientX, 2) + Math.pow(t2.clientY - t1.clientY, 2));
+            };
+
+            const getMidpointClient = (t1, t2) => {
+                return {
+                    x: (t1.clientX + t2.clientX) / 2,
+                    y: (t1.clientY + t2.clientY) / 2
+                };
+            };
+
+
             const clampCamera = function() {
                 const boardWorldWidth = currentGridSize * BASE_CELL_SIZE;
                 const boardWorldHeight = currentGridSize * BASE_CELL_SIZE;
 
                 const visibleWorldWidth = canvas.width / zoomLevel;
                 const visibleWorldHeight = canvas.height / zoomLevel;
-
 
                 const overdragBufferX = visibleWorldWidth * 0.5;
                 const overdragBufferY = visibleWorldHeight * 0.5;
@@ -305,11 +378,9 @@
                 }, 1000);
             };
 
-
             const updateMineCountDisplay = function() {
                 mineCountDisplay.textContent = `Mines: ${currentNumMines - minesFlagged}`;
             };
-
 
             const gameOver = function(won) {
                 gameActive = false;
@@ -319,43 +390,40 @@
                     gameMessage.textContent = 'You won! 🎉';
                     gameMessage.classList.remove('text-red-400');
                     gameMessage.classList.add('text-green-400');
-
                     for (let r = 0; r < currentGridSize; r++) {
                         for (let c = 0; c < currentGridSize; c++) {
                             const cell = board[r][c];
                             if (cell.isMine && cell.state !== CELL_FLAGGED) {
-                                cell.state = CELL_FLAGGED; 
+                                cell.state = CELL_FLAGGED;
                             }
-
                             else if (!cell.isMine && cell.state !== CELL_REVEALED) {
                                 cell.state = CELL_REVEALED;
                             }
                         }
                     }
-                    minesFlagged = currentNumMines; 
+                    minesFlagged = currentNumMines;
                 } else {
                     gameMessage.textContent = 'Game Over! 💥';
                     gameMessage.classList.remove('text-green-400');
                     gameMessage.classList.add('text-red-400');
-
+                    
                     for (let r = 0; r < currentGridSize; r++) {
                         for (let c = 0; c < currentGridSize; c++) {
                             const cell = board[r][c];
                             if (cell.isMine) {
                                 if (cell.state !== CELL_FLAGGED) {
-                                    cell.state = CELL_REVEALED; 
+                                    cell.state = CELL_REVEALED;
                                 }
-
-                            } else { 
-                                if (cell.state !== CELL_REVEALED) { 
-                                    cell.state = CELL_REVEALED; 
+                            } else {
+                                if (cell.state !== CELL_REVEALED) {
+                                    cell.state = CELL_REVEALED;
                                 }
                             }
                         }
                     }
                 }
                 updateMineCountDisplay();
-                requestAnimationFrame(animationLoop); 
+                requestAnimationFrame(animationLoop);
             };
 
             const checkWin = function() {
@@ -366,7 +434,7 @@
 
             const uncoverCell = function(row, col, isInitialClick = false) {
                 if (row < 0 || row >= currentGridSize || col < 0 || col >= currentGridSize ||
-                    !isBoardReady || !board[row] || !board[row][col] || 
+                    !isBoardReady || !board[row] || !board[row][col] ||
                     board[row][col].state === CELL_REVEALED || board[row][col].state === CELL_FLAGGED || !gameActive) {
                     return;
                 }
@@ -374,8 +442,7 @@
                 const cell = board[row][col];
 
                 if (cell.isMine && !isInitialClick) {
-                    cell.isClickedMine = true; 
-
+                    cell.isClickedMine = true;
                     gameOver(false);
                     return;
                 }
@@ -390,15 +457,14 @@
                         }
                     }
                 }
-
-                if (gameActive) { 
+                if (gameActive) {
                     drawBoard();
                 }
                 checkWin();
             };
 
             const toggleFlag = function(row, col) {
-                if (!gameActive || !isBoardReady || !board[row] || !board[row][col] || 
+                if (!gameActive || !isBoardReady || !board[row] || !board[row][col] ||
                     board[row][col].state === CELL_REVEALED) {
                     return;
                 }
@@ -415,7 +481,6 @@
                 drawBoard();
                 checkWin();
             };
-
 
             const placeMines = function(firstClickRow, firstClickCol) {
                 let minesPlaced = 0;
@@ -451,9 +516,7 @@
                 }
             };
 
-
             const drawBoard = function() {
-
                 if (!isBoardReady) {
                     return;
                 }
@@ -468,7 +531,6 @@
 
                 for (let r = 0; r < currentGridSize; r++) {
                     for (let c = 0; c < currentGridSize; c++) {
-
                         if (!board[r] || !board[r][c]) { 
                             continue; 
                         }
@@ -494,7 +556,6 @@
                                 ctx.textBaseline = 'middle';
                                 ctx.fillText(cell.adjacentMines, x + scaledCellSize / 2, y + scaledCellSize / 2);
                             } else if (cell.isMine) {
-     
                                 const mineColor = cell.isClickedMine ? COLORS.clickedMine : COLORS.mine;
                                 drawMine(x, y, scaledCellSize, mineColor, cell.isClickedMine);
                             }
@@ -503,7 +564,7 @@
                         if (gameActive && (cell.state === CELL_COVERED || cell.state === CELL_FLAGGED) && r === hoveredCell.row && c === hoveredCell.col) {
                             ctx.beginPath();
                             ctx.rect(x, y, scaledCellSize, scaledCellSize);
-                            ctx.fillStyle = COLORS.hoverEffect; 
+                            ctx.fillStyle = COLORS.hoverEffect;
                             ctx.fill();
                             ctx.closePath();
                         }
@@ -513,17 +574,16 @@
                         }
                     }
                 }
-                ctx.restore(); 
+                ctx.restore();
 
                 ctx.strokeStyle = COLORS.gridLine;
 
                 const getDesiredScreenLineWidth = function(gridSize) {
-
                     if (gridSize <= 15) {
                         return 4; 
-                    } else if (gridSize <= 30) { 
+                    } else if (gridSize <= 30) {
                         return 3; 
-                    } else { 
+                    } else {
                         return 2; 
                     }
                 };
@@ -531,10 +591,11 @@
                 const desiredScreenLineWidth = getDesiredScreenLineWidth(currentGridSize);
 
                 const internalCanvasWidth = canvas.width;
-                const displayedCanvasWidth = canvas.clientWidth || internalCanvasWidth; 
-                const cssScaleFactor = internalCanvasWidth / displayedCanvasWidth; 
+                const displayedCanvasWidth = canvas.clientWidth || internalCanvasWidth;
+                const cssScaleFactor = internalCanvasWidth / displayedCanvasWidth;
 
                 ctx.lineWidth = desiredScreenLineWidth * cssScaleFactor;
+
 
                 const worldGridWidth = currentGridSize * BASE_CELL_SIZE;
                 const worldGridHeight = currentGridSize * BASE_CELL_SIZE;
@@ -547,13 +608,12 @@
                 ctx.save();
                 ctx.beginPath();
                 ctx.rect(displayGridLeft, displayGridTop,
-                         displayGridRight - displayGridLeft, 
-                         displayGridBottom - displayGridTop); 
-                ctx.clip(); 
+                         displayGridRight - displayGridLeft,
+                         displayGridBottom - displayGridTop);
+                ctx.clip();
 
                 for (let r = 0; r <= currentGridSize; r++) {
                     const worldY = r * BASE_CELL_SIZE;
-
                     const displayY = Math.round((worldY - cameraY) * zoomLevel); 
                     
                     ctx.beginPath();
@@ -564,7 +624,6 @@
 
                 for (let c = 0; c <= currentGridSize; c++) {
                     const worldX = c * BASE_CELL_SIZE;
-
                     const displayX = Math.round((worldX - cameraX) * zoomLevel); 
                     
                     ctx.beginPath();
@@ -573,16 +632,16 @@
                     ctx.stroke();
                 }
 
-                ctx.restore(); 
+                ctx.restore();
             };
 
             const animationLoop = function() {
-                drawBoard(); 
+                drawBoard();
 
                 let shouldContinueAnimation = false;
                 if (gameActive) {
                     shouldContinueAnimation = true;
-                } else if (isBoardReady) { 
+                } else if (isBoardReady) {
                     for (let r = 0; r < currentGridSize; r++) {
                         for (let c = 0; c < currentGridSize; c++) {
                             if (board[r] && board[r][c] && board[r][c].isClickedMine) {
@@ -600,15 +659,11 @@
             };
 
 
-
             const resizeCanvas = function() {
-
                 canvas.width = currentGridSize * BASE_CELL_SIZE;
                 canvas.height = currentGridSize * BASE_CELL_SIZE;
                 
-
                 calculateDynamicZoomLimits(); 
-
                 zoomLevel = Math.max(dynamicMinZoom, Math.min(zoomLevel, dynamicMaxZoom));
                 
                 clampCamera();
@@ -625,14 +680,11 @@
                 const zoomToFitWidth = canvasDisplayWidth / boardWorldWidth;
                 const zoomToFitHeight = canvasDisplayHeight / boardWorldHeight;
                 
-
-                dynamicMinZoom = Math.min(zoomToFitWidth, zoomToFitHeight) * 0.9; 
+                dynamicMinZoom = Math.min(zoomToFitWidth, zoomToFitHeight) * 0.9;
                 
-
-                dynamicMinZoom = Math.max(0.1, dynamicMinZoom); 
+                dynamicMinZoom = Math.max(0.1, dynamicMinZoom);
 
                 dynamicMaxZoom = 250 / BASE_CELL_SIZE; 
-
                 dynamicMaxZoom = Math.min(5.0, dynamicMaxZoom); 
             };
 
@@ -642,14 +694,13 @@
                 currentGridSize = gridSize;
                 currentNumMines = numMines;
 
-               
                 canvas.width = currentGridSize * BASE_CELL_SIZE;
                 canvas.height = currentGridSize * BASE_CELL_SIZE;
                 
                 calculateDynamicZoomLimits(); 
-                zoomLevel = Math.max(1.0, dynamicMinZoom); 
+                zoomLevel = Math.max(1.0, dynamicMinZoom);
 
-                board = []; 
+                board = [];
                 for (let r = 0; r < currentGridSize; r++) {
                     board[r] = [];
                     for (let c = 0; c < currentGridSize; c++) {
@@ -657,7 +708,7 @@
                             isMine: false,
                             state: CELL_COVERED,
                             adjacentMines: 0,
-                            isClickedMine: false, 
+                            isClickedMine: false,
                         };
                     }
                 }
@@ -672,7 +723,7 @@
                 hoveredCell = { row: -1, col: -1 };
                 
                 cameraX = 0;
-                cameraY = 0; 
+                cameraY = 0;
 
                 gameMessage.textContent = '';
                 gameMessage.classList.remove('text-green-400', 'text-red-400');
@@ -680,18 +731,18 @@
 
                 updateMineCountDisplay();
                 startTimer();
-                requestAnimationFrame(animationLoop); 
+                requestAnimationFrame(animationLoop);
             };
 
             canvas.addEventListener('mousedown', function(event) {
-                const worldCoords = getMouseWorldCoordinates(event);
+                const worldCoords = getEventWorldCoordinates(event);
                 dragStartWorldX = worldCoords.x;
                 dragStartWorldY = worldCoords.y;
 
                 initialClickX = event.clientX;
                 initialClickY = event.clientY;
 
-                if (event.button === 0) { 
+                if (event.button === 0) {
                     isDragging = true;
                 } else if (event.button === 2) {
                     if (gameActive) {
@@ -715,19 +766,21 @@
                     const distMovedY = Math.abs(event.clientY - initialClickY);
 
                     if (distMovedX < DRAG_THRESHOLD && distMovedY < DRAG_THRESHOLD) {
-                        const worldCoords = getMouseWorldCoordinates(event);
+                        const worldCoords = getEventWorldCoordinates(event);
                         const col = Math.floor(worldCoords.x / BASE_CELL_SIZE);
                         const row = Math.floor(worldCoords.y / BASE_CELL_SIZE);
 
                         if (row >= 0 && row < currentGridSize && col >= 0 && col < currentGridSize) {
                             if (isFirstClick) {
                                 placeMines(row, col);
-                                isFirstClick = false;
+                                uncoverCell(row, col, true);
+                                isFirstClick = false; 
+                            } else {
+                                uncoverCell(row, col);
                             }
-                            uncoverCell(row, col);
                         }
                     }
-                    isDragging = false; 
+                    isDragging = false;
                 }
             });
 
@@ -736,20 +789,19 @@
             });
 
             canvas.addEventListener('mousemove', function(event) {
-                const worldCoords = getMouseWorldCoordinates(event);
-                const col = Math.floor(worldCoords.x / BASE_CELL_SIZE);
-                const row = Math.floor(worldCoords.y / BASE_CELL_SIZE);
+                if (gameActive && event.buttons === 0) {
+                    const worldCoords = getEventWorldCoordinates(event);
+                    const col = Math.floor(worldCoords.x / BASE_CELL_SIZE);
+                    const row = Math.floor(worldCoords.y / BASE_CELL_SIZE);
 
-              
-                if (row !== hoveredCell.row || col !== hoveredCell.col) {
-                    hoveredCell = { row: row, col: col };
-                    if (gameActive) { 
+                    if (row !== hoveredCell.row || col !== hoveredCell.col) {
+                        hoveredCell = { row: row, col: col };
                         drawBoard(); 
                     }
                 }
 
-             
-                if (isDragging) {
+
+                if (isDragging && event.buttons === 1) {
                     const rect = canvas.getBoundingClientRect();
                     const canvasDisplayX = event.clientX - rect.left;
                     const canvasInternalX = canvasDisplayX * (canvas.width / rect.width);
@@ -759,13 +811,13 @@
                     cameraX = dragStartWorldX - (canvasInternalX / zoomLevel);
                     cameraY = dragStartWorldY - (scaledCanvasInternalY / zoomLevel); 
                     
-                    clampCamera(); 
+                    clampCamera();
                     drawBoard();
                 }
             });
 
             canvas.addEventListener('mouseleave', function(event) {
-                isDragging = false; 
+                isDragging = false;
                 if (hoveredCell.row !== -1 || hoveredCell.col !== -1) {
                     hoveredCell = { row: -1, col: -1 };
                     if (gameActive) { 
@@ -775,29 +827,133 @@
             });
 
             canvas.addEventListener('wheel', function(event) {
-                event.preventDefault(); 
+                event.preventDefault();
 
-                const scaleFactor = 1.1; 
-                const mouseWorld = getMouseWorldCoordinates(event);
+                const scaleFactor = 1.1;
+                const mouseWorld = getEventWorldCoordinates(event);
 
                 const oldZoomLevel = zoomLevel;
 
-                if (event.deltaY < 0) { 
+                if (event.deltaY < 0) {
                     zoomLevel *= scaleFactor;
-                } else { 
+                } else {
                     zoomLevel /= scaleFactor;
                 }
+
                 zoomLevel = Math.max(dynamicMinZoom, Math.min(zoomLevel, dynamicMaxZoom));
 
                 cameraX += (mouseWorld.x - cameraX) * (1 - oldZoomLevel / zoomLevel);
                 cameraY += (mouseWorld.y - cameraY) * (1 - oldZoomLevel / zoomLevel);
 
                 clampCamera();
-                drawBoard(); 
+                drawBoard();
             });
 
+            canvas.addEventListener('touchstart', function(event) {
+                event.preventDefault();
+
+                if (event.touches.length === 1) {
+                    isDragging = true;
+                    touchStartX = event.touches[0].clientX;
+                    touchStartY = event.touches[0].clientY;
+                    touchStartTime = Date.now();
+                    hasMoved = false;
+                    
+                    const worldCoords = getEventWorldCoordinates(event);
+                    dragStartWorldX = worldCoords.x;
+                    dragStartWorldY = worldCoords.y;
+                } else if (event.touches.length === 2) {
+                    isPinching = true;
+                    isDragging = false; 
+                    initialPinchDistance = getDistance(event.touches[0], event.touches[1]);
+                    const midpointClient = getMidpointClient(event.touches[0], event.touches[1]);
+                    initialPinchCenter = getEventWorldCoordinates({ clientX: midpointClient.x, clientY: midpointClient.y });
+                }
+            });
+
+            canvas.addEventListener('touchmove', function(event) {
+                event.preventDefault();
+
+                if (event.touches.length === 1 && isDragging) {
+                    const currentClientX = event.touches[0].clientX;
+                    const currentClientY = event.touches[0].clientY;
+
+                    if (Math.abs(currentClientX - touchStartX) > TAP_MOVE_THRESHOLD ||
+                        Math.abs(currentClientY - touchStartY) > TAP_MOVE_THRESHOLD) {
+                        hasMoved = true;
+                    }
+
+                    const rect = canvas.getBoundingClientRect();
+                    const canvasDisplayX = currentClientX - rect.left;
+                    const canvasDisplayY = currentClientY - rect.top;
+
+                    const canvasInternalX = canvasDisplayX * (canvas.width / rect.width);
+                    const canvasInternalY = canvasDisplayY * (canvas.height / rect.height);
+                    
+                    cameraX = dragStartWorldX - (canvasInternalX / zoomLevel);
+                    cameraY = dragStartWorldY - (canvasInternalY / zoomLevel); 
+                    
+                    clampCamera();
+                    drawBoard();
+                } else if (event.touches.length === 2 && isPinching) {
+                    hasMoved = true;
+                    
+                    const currentPinchDistance = getDistance(event.touches[0], event.touches[1]);
+                    const newZoomLevel = Math.max(dynamicMinZoom, Math.min(dynamicMaxZoom, zoomLevel * (currentPinchDistance / initialPinchDistance)));
+
+                    const oldZoom = zoomLevel;
+                    zoomLevel = newZoomLevel;
+
+                    cameraX += (initialPinchCenter.x - cameraX) * (1 - oldZoom / newZoomLevel);
+                    cameraY += (initialPinchCenter.y - cameraY) * (1 - oldZoom / newZoomLevel);
+
+                    clampCamera();
+                    drawBoard();
+                    initialPinchDistance = currentPinchDistance;
+                }
+            });
+
+            canvas.addEventListener('touchend', function(event) {
+                event.preventDefault();
+
+                if (event.touches.length === 0) { 
+                    if (isDragging) {
+                        const currentClientX = event.changedTouches[0].clientX;
+                        const currentClientY = event.changedTouches[0].clientY;
+
+                        const totalMoveX = Math.abs(currentClientX - touchStartX);
+                        const totalMoveY = Math.abs(currentClientY - touchStartY);
+                        
+                        const movementOccurred = totalMoveX > TAP_MOVE_THRESHOLD || totalMoveY > TAP_MOVE_THRESHOLD;
+                        const timeElapsed = Date.now() - touchStartTime;
+
+                        if (!movementOccurred && timeElapsed < TAP_THRESHOLD_MS && gameActive) {
+                            const worldCoords = getEventWorldCoordinates(event);
+                            const col = Math.floor(worldCoords.x / BASE_CELL_SIZE);
+                            const row = Math.floor(worldCoords.y / BASE_CELL_SIZE);
+
+                            if (row >= 0 && row < currentGridSize && col >= 0 && col < currentGridSize) {
+                                if (isFirstClick) {
+                                    placeMines(row, col);
+                                    uncoverCell(row, col, true);
+                                    isFirstClick = false;
+                                } else {
+                                    uncoverCell(row, col);
+                                }
+                            }
+                        }
+                    }
+                    isDragging = false;
+                    isPinching = false;
+                    hasMoved = false;
+                    hoveredCell = { row: -1, col: -1 };
+                    drawBoard();
+                }
+            });
+
+
             resetButton.addEventListener('click', function() {
-                difficultyModal.classList.remove('hidden'); 
+                difficultyModal.classList.remove('hidden');
                 highlightActiveDifficultyButton();
             });
             window.addEventListener('resize', resizeCanvas);
@@ -806,6 +962,7 @@
                 presetDifficultyButtons.forEach(btn => btn.classList.remove('border-2', 'border-yellow-400', 'shadow-lg'));
                 customSettingsContainer.classList.remove('border-2', 'border-yellow-400', 'shadow-lg');
                 customSettingsDiv.classList.add('hidden');
+
                 if (selectedButtonId) {
                     if (selectedButtonId !== 'customDifficultyButton') {
                         const selectedButton = document.getElementById(selectedButtonId);
@@ -813,8 +970,8 @@
                             selectedButton.classList.add('border-2', 'border-yellow-400', 'shadow-lg');
                         }
                     } else {
-                        customSettingsDiv.classList.remove('hidden'); 
-                        customSettingsContainer.classList.add('border-2', 'border-yellow-400', 'shadow-lg'); 
+                        customSettingsDiv.classList.remove('hidden');
+                        customSettingsContainer.classList.add('border-2', 'border-yellow-400', 'shadow-lg');
                     }
                 } else {
                     let activePresetButton = null;
@@ -829,8 +986,8 @@
                     if (activePresetButton) {
                         activePresetButton.classList.add('border-2', 'border-yellow-400', 'shadow-lg');
                     } else {
-                        customSettingsDiv.classList.remove('hidden'); 
-                        customSettingsContainer.classList.add('border-2', 'border-yellow-400', 'shadow-lg'); 
+                        customSettingsDiv.classList.remove('hidden');
+                        customSettingsContainer.classList.add('border-2', 'border-yellow-400', 'shadow-lg');
                     }
                 }
             };
@@ -849,11 +1006,11 @@
                         currentGridSize = 20;
                         currentNumMines = 80;
                     }
-                    gridSizeSlider.value = currentGridSize; 
-                    updateCustomDisplays(currentGridSize); 
-                    mineCountWarning.classList.add('hidden'); 
-                    highlightActiveDifficultyButton(this.id); 
-                    validateCustomGameSettings(); 
+                    gridSizeSlider.value = currentGridSize;
+                    updateCustomDisplays(currentGridSize);
+                    mineCountWarning.classList.add('hidden');
+                    highlightActiveDifficultyButton(this.id);
+                    validateCustomGameSettings();
                 });
             });
 
@@ -861,25 +1018,25 @@
                 currentGridSize = parseInt(gridSizeSlider.value);
                 currentNumMines = Math.max(1, Math.floor(currentGridSize * currentGridSize * CUSTOM_MINE_DENSITY_RATIO));
                 
-                highlightActiveDifficultyButton(this.id); 
-                updateCustomDisplays(currentGridSize); 
+                highlightActiveDifficultyButton(this.id);
+                updateCustomDisplays(currentGridSize);
                 validateCustomGameSettings();
             });
 
             gridSizeSlider.addEventListener('input', function() {
                 let newSize = parseInt(this.value);
                 currentGridSize = newSize;
-
+                
                 let calculatedMines = Math.floor(currentGridSize * currentGridSize * CUSTOM_MINE_DENSITY_RATIO);
                 const totalCells = currentGridSize * currentGridSize;
-                const maxAllowedMines = totalCells - 9; 
+                const maxAllowedMines = totalCells - 9;
                 
-       
                 currentNumMines = Math.max(1, Math.min(calculatedMines, maxAllowedMines));
 
                 updateCustomDisplays(currentGridSize);
                 validateCustomGameSettings();
             });
+
             const updateCustomDisplays = function(size) {
                 gridSizeDisplay.textContent = size;
                 gridSizeDisplay2.textContent = size;
@@ -894,18 +1051,16 @@
                 let isValid = true;
                 let warningMessage = '';
 
-                if (isNaN(currentGridSize) || currentGridSize < 5 || currentGridSize > 50) {
+                if (isNaN(currentGridSize) || currentGridSize < 5 || currentGridSize > 50) { 
                     isValid = false;
                     warningMessage = 'Grid size must be between 5 and 50.';
                 } else if (currentNumMines < 1 || currentNumMines >= maxAllowedMines) {
-
                     isValid = false;
                     warningMessage = `Mine count (${currentNumMines}) is invalid for a ${currentGridSize}x${currentGridSize} grid.`;
                 }
 
                 if (!isValid) {
                     mineCountWarning.textContent = warningMessage;
-                    mineCountWarning.classList.remove('hidden');
                     startGameButton.disabled = true;
                     startGameButton.classList.add('opacity-50', 'cursor-not-allowed');
                 } else {
@@ -917,7 +1072,6 @@
 
 
             startGameButton.addEventListener('click', function() {
-
                 currentGridSize = Math.max(5, Math.min(currentGridSize, 50));
                 const maxAllowedMinesAtStart = (currentGridSize * currentGridSize) - 9;
                 currentNumMines = Math.max(1, Math.min(currentNumMines, maxAllowedMinesAtStart));
@@ -927,10 +1081,9 @@
             });
 
             difficultyModal.classList.remove('hidden');
-            highlightActiveDifficultyButton(); 
-            updateCustomDisplays(currentGridSize); 
+            highlightActiveDifficultyButton();
+            updateCustomDisplays(currentGridSize);
             validateCustomGameSettings(); 
         };
     </script>
 </body>
-</html>
