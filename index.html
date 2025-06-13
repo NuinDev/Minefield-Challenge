@@ -74,10 +74,12 @@
     </style>
 </head>
 <body class="selection:bg-blue-600 bg-gray-900">
-    <div class="hidden md:block p-4 rounded-lg border border-gray-700 bg-gray-700 shadow-md fixed left-6 top-1/2 transform -translate-y-1/2 z-51" style="width: 154px; height: 634px;">
+    <!-- Ad container - Fixed position on larger screens -->
+    <div class="hidden md:block p-4 rounded-lg border border-gray-700 bg-gray-700 shadow-md fixed left-6 top-1/2 transform -translate-y-1/2 z-[51]" style="width: 154px; height: 634px;">
         <iframe data-aa='2398453' src='//ad.a-ads.com/2398453?size=120x600' style='width:120px; height:600px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
     </div>
 
+    <!-- Main game content container - This is now truly centered on the page -->
     <div class="flex flex-col items-center p-6 bg-gray-800 rounded-xl shadow-2xl max-w-lg w-full">
         <h1 class="text-4xl font-extrabold text-gray-100 mb-6 tracking-tight">Minefield Challenge</h1>
 
@@ -107,14 +109,18 @@
         </div>
     </div>
 
-    <div id="difficultyModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 p-4">
+    <!-- New: Separate backdrop for the modal -->
+    <div id="modalBackdrop" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden z-[49]"></div>
+
+    <!-- New: Modal content (the actual popup box) -->
+    <div id="difficultyModal" class="fixed inset-0 flex items-center justify-center z-[50] p-4 hidden">
         <div class="bg-gray-800 p-8 rounded-lg shadow-xl max-w-sm w-full border border-blue-600">
             <h2 class="text-3xl font-bold text-gray-100 mb-6 text-center">Choose Difficulty</h2>
 
             <div class="space-y-4">
                 <button id="easyDifficultyButton" class="difficulty-button w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 transition duration-300" data-difficulty="easy">Easy (10x10, 10 Mines)</button>
                 <button id="mediumDifficultyButton" class="difficulty-button w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 transition duration-300" data-difficulty="medium">Medium (16x16, 40 Mines)</button>
-                <button id="hardDifficultyButton" class="difficulty-button w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 transition duration-300" data-difficulty="hard">Hard (20x20, 80 Mines)</button>
+                <button id="hardDifficultyButton" class="w-full py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800 transition duration-300" data-difficulty="hard">Hard (20x20, 80 Mines)</button>
             </div>
 
             <div id="customSettingsContainer" class="mt-4 space-y-4 rounded-lg p-2">
@@ -145,7 +151,9 @@
             const gameMessage = document.getElementById('game-message');
             const mineCountDisplay = document.getElementById('mine-count');
             const timerDisplay = document.getElementById('timer');
-            const difficultyModal = document.getElementById('difficultyModal');
+            // MODAL CHANGES: Get backdrop and the modal content div
+            const modalBackdrop = document.getElementById('modalBackdrop');
+            const difficultyModal = document.getElementById('difficultyModal'); // This is now the centered container for the actual popup
             const presetDifficultyButtons = document.querySelectorAll('.difficulty-button:not(#customDifficultyButton)'); 
             const customDifficultyButton = document.getElementById('customDifficultyButton');
             const customSettingsContainer = document.getElementById('customSettingsContainer');
@@ -950,6 +958,8 @@
 
 
             resetButton.addEventListener('click', function() {
+                // Show both the backdrop and the modal content
+                modalBackdrop.classList.remove('hidden');
                 difficultyModal.classList.remove('hidden');
                 highlightActiveDifficultyButton();
             });
@@ -1073,10 +1083,14 @@
                 const maxAllowedMinesAtStart = (currentGridSize * currentGridSize) - 9;
                 currentNumMines = Math.max(1, Math.min(currentNumMines, maxAllowedMinesAtStart));
                 
+                // Hide both the backdrop and the modal content
+                modalBackdrop.classList.add('hidden');
                 difficultyModal.classList.add('hidden');
                 initializeGame(currentGridSize, currentNumMines);
             });
 
+            // Show modal on page load
+            modalBackdrop.classList.remove('hidden');
             difficultyModal.classList.remove('hidden');
             highlightActiveDifficultyButton();
             updateCustomDisplays(currentGridSize);
