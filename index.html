@@ -74,7 +74,7 @@
     </style>
 </head>
 <body class="selection:bg-blue-600 bg-gray-900">
-    <div class="hidden md:block p-4 rounded-lg border border-gray-700 bg-gray-700 shadow-md fixed left-6 top-1/2 transform -translate-y-1/2 z-10" style="width: 154px; height: 634px;">
+    <div class="hidden md:block p-4 rounded-lg border border-gray-700 bg-gray-700 shadow-md fixed left-6 top-1/2 transform -translate-y-1/2 z-51" style="width: 154px; height: 634px;">
         <iframe data-aa='2398453' src='//ad.a-ads.com/2398453?size=120x600' style='width:120px; height:600px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
     </div>
 
@@ -767,16 +767,16 @@
                         const col = Math.floor(worldCoords.x / BASE_CELL_SIZE);
                         const row = Math.floor(worldCoords.y / BASE_CELL_SIZE);
 
-                        if (row >= 0 && row < currentGridSize && col >= 0 && col < currentGridSize) {
-                            if (isFirstClick) {
-                                placeMines(row, col);
-                                uncoverCell(row, col, true);
-                                isFirstClick = false; 
-                            } else {
-                                uncoverCell(row, col);
+                            if (row >= 0 && row < currentGridSize && col >= 0 && col < currentGridSize) {
+                                if (isFirstClick) {
+                                    placeMines(row, col);
+                                    uncoverCell(row, col, true);
+                                    isFirstClick = false; 
+                                } else {
+                                    uncoverCell(row, col);
+                                }
                             }
                         }
-                    }
                     isDragging = false;
                 }
             });
