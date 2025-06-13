@@ -12,12 +12,11 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            /* Flexbox for centering its direct children (the main game box) */
             display: flex;
-            justify-content: center; /* Horizontally center */
-            align-items: center;    /* Vertically center */
-            min-height: 100vh;      /* Ensure it takes full viewport height */
-            padding: 20px;          /* Add some padding for smaller screens if content overflows */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
         canvas {
             border-radius: 0.75rem;
@@ -75,12 +74,10 @@
     </style>
 </head>
 <body class="selection:bg-blue-600 bg-gray-900">
-    <!-- Ad container - Fixed position on larger screens, relative to viewport -->
-    <div class="hidden md:flex flex-col items-center p-4 rounded-lg border border-gray-700 bg-gray-700 shadow-md fixed left-6 top-1/2 transform -translate-y-1/2 z-10">
+    <div class="hidden md:block p-4 rounded-lg border border-gray-700 bg-gray-700 shadow-md fixed left-6 top-1/2 transform -translate-y-1/2 z-10" style="width: 154px; height: 634px;">
         <iframe data-aa='2398453' src='//ad.a-ads.com/2398453?size=120x600' style='width:120px; height:600px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
     </div>
 
-    <!-- Main game content container - This is now truly centered on the page, unaffected by the ad's position -->
     <div class="flex flex-col items-center p-6 bg-gray-800 rounded-xl shadow-2xl max-w-lg w-full">
         <h1 class="text-4xl font-extrabold text-gray-100 mb-6 tracking-tight">Minefield Challenge</h1>
 
